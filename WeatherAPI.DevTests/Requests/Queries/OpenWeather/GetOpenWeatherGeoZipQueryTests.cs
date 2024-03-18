@@ -1,4 +1,4 @@
-﻿namespace WeatherAPI.IntegrationTests.Requests.Queries.OpenWeather;
+﻿namespace WeatherAPI.DevTests.Requests.Queries.OpenWeather;
 public class GetOpenWeatherGeoZipQueryTests : IClassFixture<WeatherAppWebApplicationFactory<Program>>, IDisposable
 {
     private readonly WeatherAppWebApplicationFactory<Program> _factory;

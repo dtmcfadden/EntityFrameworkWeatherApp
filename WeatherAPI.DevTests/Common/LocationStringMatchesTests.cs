@@ -1,7 +1,6 @@
 ﻿using WeatherAPI.Common;
 
-
-namespace WeatherAPI.IntegrationTests.Common;
+namespace WeatherAPI.DevTests.Common;
 public class LocationStringMatchesTests
 {
     private readonly ITestOutputHelper _output;

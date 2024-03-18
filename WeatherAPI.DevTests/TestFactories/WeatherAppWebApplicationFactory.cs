@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 
-namespace WeatherAPI.IntegrationTests.TestFactories;
+namespace WeatherAPI.DevTests.TestFactories;
 public class WeatherAppWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
 {
     // TODO: Get Sender working properly for testing

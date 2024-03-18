@@ -1,4 +1,4 @@
-﻿namespace WeatherAPI.IntegrationTests.Services;
+﻿namespace WeatherAPI.DevTests.Services;
 public class WeatherAPIHTTPServiceTests : IClassFixture<WeatherAppWebApplicationFactory<Program>>, IDisposable
 {
     private readonly WeatherAppWebApplicationFactory<Program> _factory;

@@ -1,6 +1,6 @@
 ﻿
 
-namespace WeatherAPI.IntegrationTests.Requests.Queries.WeatherAPI;
+namespace WeatherAPI.DevTests.Requests.Queries.WeatherAPI;
 public class GetWeatherAPIWeatherByLatLongQueryTests :
     IClassFixture<WeatherAppWebApplicationFactory<Program>>, IDisposable
 {

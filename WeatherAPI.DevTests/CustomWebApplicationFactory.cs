@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 
-namespace WeatherAPI.IntegrationTests;
+namespace WeatherAPI.DevTests;
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     //public Mock<TomorrowOptions> TomorrowOptionsMock { get; }

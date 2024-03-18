@@ -1,4 +1,4 @@
-﻿namespace WeatherAPI.IntegrationTests.Entities;
+﻿namespace WeatherAPI.DevTests.Entities;
 public class LatLongEntityTests(ITestOutputHelper outputHelper)
 {
     private readonly ITestOutputHelper _output = outputHelper;
