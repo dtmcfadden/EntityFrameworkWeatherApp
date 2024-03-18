@@ -1,4 +1,4 @@
-﻿namespace WeatherAPI.IntegrationTests.Services;
+﻿namespace WeatherAPI.DevTests.Services;
 public class GeneralHTTPServiceTests
 {
     private readonly ITestOutputHelper _output;

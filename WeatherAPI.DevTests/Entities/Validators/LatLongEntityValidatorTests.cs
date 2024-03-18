@@ -1,4 +1,4 @@
-﻿namespace WeatherAPI.IntegrationTests.Entities.Validators;
+﻿namespace WeatherAPI.DevTests.Entities.Validators;
 public class LatLongEntityValidatorTests(ITestOutputHelper outputHelper)
 {
     private readonly LatLongEntityValidator _latLongEntityValidator = new();

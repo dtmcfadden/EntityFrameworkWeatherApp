@@ -1,0 +1,30 @@
+on:
+  push:
+    branches:
+    - dev
+env:
+  DOTNET_CORE_VERSION: 8.0.x
+  CONTAINER_APP_NAME: efweatherapp-container-app
+  CONTAINER_APP_ENVIRONMENT_NAME: projectTestingEnv
+  RESOURCE_GROUP: rg-dtm-us-central
+  CONTAINER_REGISTRY_NAME: registry20240318161934
+  CONTAINER_REGISTRY_LOGIN_SERVER: registry20240318161934.azurecr.io
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v4
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+  test:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v4
+    - name: Run tests
+      run: dotnet test --filter 'FullyQualifiedName!~.DevTests'
+      

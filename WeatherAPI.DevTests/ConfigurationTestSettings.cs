@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace WeatherAPI.IntegrationTests;
+namespace WeatherAPI.DevTests;
 public static partial class ConfigurationTestSettings
 {
     /// <summary>
