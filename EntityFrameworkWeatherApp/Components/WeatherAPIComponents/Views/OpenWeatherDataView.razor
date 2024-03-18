@@ -1,0 +1,67 @@
+﻿@using global::WeatherAPI.Models.OpenWeather
+@using EntityFrameworkWeatherApp.Components.WeatherAPIComponents.Cards.OpenWeather
+
+@if (Model is not null)
+{
+    <div class="row">
+        @if (Model?.Main is not null)
+        {
+            <div class="col p-1">
+                <OpenWeatherDataMainCard Model="@Model.Main" />
+            </div>
+        }
+        @if (Model is not null)
+        {
+            <div class="col p-1">
+                <OpenWeatherDataRootCard Model="@Model" />
+            </div>
+        }
+        @if (Model?.Weather is not null)
+        {
+            <div class="col p-1">
+                <OpenWeatherDataWeatherCard Model="@Model.Weather" />
+            </div>
+        }
+        @if (Model?.Coordinates is not null)
+        {
+            <div class="col p-1">
+                <OpenWeatherDataCoordCard Model="@Model.Coordinates" />
+            </div>
+        }
+        @if (Model?.Wind is not null)
+        {
+            <div class="col p-1">
+                <OpenWeatherDataWindCard Model="@Model?.Wind" />
+            </div>
+        }
+        @if (Model?.Rain is not null)
+        {
+            <div class="col p-1">
+                <OpenWeatherDataRainCard Model="@Model?.Rain" />
+            </div>
+        }
+        @if (Model?.Clouds is not null)
+        {
+            <div class="col p-1">
+                <OpenWeatherDataCloudsCard Model="@Model?.Clouds" />
+            </div>
+        }
+        @if (Model?.Snow is not null)
+        {
+            <div class="col p-1">
+                <OpenWeatherDataSnowCard Model="@Model?.Snow" />
+            </div>
+        }
+        @if (Model?.Sys is not null)
+        {
+            <div class="col p-1">
+                <OpenWeatherDataSysCard Model="@Model?.Sys" />
+            </div>
+        }
+    </div>
+}
+@code {
+    [Parameter]
+    public OpenWeatherDataModel? Model {  get; set; }
+
+}

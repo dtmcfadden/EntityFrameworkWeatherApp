@@ -1,0 +1,28 @@
+﻿@using global::WeatherAPI.Models.OpenWeather
+@using EntityFrameworkWeatherApp.Components.Shared
+
+<CardTemplate CardTitle="Weather">
+    <CardChildContent>
+        <TableTemplate Items="Model" TItem="OpenWeatherDataWeatherModel" Context="item">
+            <TableHeader>
+                <th scope="col">Id</th>
+                <th scope="col">Main</th>
+                <th scope="col">Description</th>
+                <th scope="col">Icon</th>
+            </TableHeader>
+            <RowTemplate>
+                <tr>
+                    <th scope="row">@item.WeatherId</th>
+                    <td>@item.Main</td>
+                    <td>@item.Description</td>
+                    <td>@item.Icon</td>
+                </tr>
+            </RowTemplate>
+        </TableTemplate>
+    </CardChildContent>
+</CardTemplate>
+
+@code {
+    [Parameter]
+    public List<OpenWeatherDataWeatherModel>? Model { get; set; }
+}

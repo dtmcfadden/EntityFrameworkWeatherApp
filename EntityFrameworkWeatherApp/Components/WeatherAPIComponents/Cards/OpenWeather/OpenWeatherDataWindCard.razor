@@ -1,0 +1,40 @@
+﻿@using global::WeatherAPI.Models.OpenWeather
+@using EntityFrameworkWeatherApp.Components.Shared
+@using EntityFrameworkWeatherApp.Models
+
+<CardTemplate CardTitle="Wind">
+    <CardChildContent>
+        <ListTemplate Items="listItems" TItem="LabelDivTemplateModel" Context="item" SkipNull="false">
+            <ListItemTemplate>
+                <LabelDivTemplate Subheading="@item.Subheading" ContentText="@item.ContentText" />
+            </ListItemTemplate>
+        </ListTemplate>
+    </CardChildContent>
+</CardTemplate>
+
+@code {
+    [Parameter]
+    public OpenWeatherDataWindModel? Model { get; set; }
+
+    [Parameter]
+    public bool ClearList { get; set; } = true;
+
+    private List<LabelDivTemplateModel> listItems = new();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (ClearList)
+            listItems = new();
+
+        if (Model?.Speed is not null)
+            listItems.Add(new() { Subheading = "Speed", ContentText = Model?.Speed.ToString() });
+
+        if (Model?.Degrees is not null)
+            listItems.Add(new() { Subheading = "Degrees", ContentText = Model?.Degrees.ToString() });
+
+        if (Model?.Gust is not null)
+            listItems.Add(new() { Subheading = "Gust", ContentText = Model?.Gust.ToString() });
+    }
+}

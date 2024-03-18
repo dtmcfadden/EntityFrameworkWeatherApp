@@ -1,0 +1,58 @@
+﻿@using EntityFrameworkWeatherApp.Models
+@using EntityFrameworkWeatherApp.Mediator.WeatherAPI
+@using EntityFrameworkWeatherApp.Components.Shared
+@using Microsoft.AspNetCore.Mvc
+@using global::WeatherAPI.Models.OpenWeather
+@inject ISender sender
+
+<EditForm method="get" Model="@owLocationNameViewModel" OnValidSubmit="@OpenWeatherLocationSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <ExceptionDisplayTemplate exception="@owLocationError" />
+    <div class="row border grid">
+        <div class="col-8">
+            <div class="form-floating">
+                <InputText type="text" class="form-control selectclick" id="openweatherLocation" placeholder="Location" @bind-Value="owLocationNameViewModel!.Location" />
+                <label for="openweatherLocation">Location</label>
+                <ValidationMessage For="() => owLocationNameViewModel.Location" />
+            </div>
+        </div>
+        <div class="col-4 pt-2">
+            <div class="form-floating">
+                <button type="submit" class="btn btn-primary" id="openweatherLocationSubmit">Submit</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public EventCallback<OpenWeatherDataModel?> ReturnData { get; set; }
+
+    public void ClearForm()
+    {
+        owLocationError?.Clear();
+    }
+
+    private LocationNameViewModel? owLocationNameViewModel = new();
+    private Dictionary<string, List<ProblemDetails>>? owLocationError { get; set; } = [];
+
+    private async Task OpenWeatherLocationSubmit()
+    {
+        ClearForm();
+
+        var resultObj = await OpenWeatherResults.GetOpenWeatherDirectLocationResult(owLocationNameViewModel.Location, sender);
+
+        if (resultObj.IsSuccess)
+        {
+            await ReturnData.InvokeAsync(resultObj.Value);
+        }
+        else
+        {
+            if (resultObj.Exception != null)
+            {
+                owLocationError = resultObj.Exception;
+            }
+        }
+    }
+}

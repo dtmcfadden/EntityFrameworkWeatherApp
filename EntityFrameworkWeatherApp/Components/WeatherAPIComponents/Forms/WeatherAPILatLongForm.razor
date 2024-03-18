@@ -1,0 +1,65 @@
+﻿@using EntityFrameworkWeatherApp.Models
+@using EntityFrameworkWeatherApp.Mediator.WeatherAPI
+@using EntityFrameworkWeatherApp.Components.Shared
+@using Microsoft.AspNetCore.Mvc
+@using global::WeatherAPI.Models.WeatherAPI
+@inject ISender sender
+
+<EditForm method="get" Model="@waLatLongViewModel" OnValidSubmit="@WeatherAPILatLongSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <ExceptionDisplayTemplate exception="@waLatLongError" />
+    <div class="row border grid">
+        <div class="col-4">
+            <div class="form-floating">
+                <InputNumber type="text" class="form-control selectclick" id="weatherAPILatLongLatitude" placeholder="Latitude" @bind-Value="waLatLongViewModel!.Latitude" />
+                <label for="weatherAPILatLongLatitude">Latitude</label>
+                <ValidationMessage For="() => waLatLongViewModel.Latitude" />
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-floating">
+                <InputNumber type="text" class="form-control selectclick" id="weatherAPILatLongLongitude" placeholder="Longitude" @bind-Value="waLatLongViewModel!.Longitude" />
+                <label for="weatherAPILatLongLongitude">Longitude</label>
+                <ValidationMessage For="() => waLatLongViewModel.Longitude" />
+            </div>
+        </div>
+        <div class="col-4 pt-2">
+            <div class="form-floating">
+                <button type="submit" class="btn btn-primary" id="weatherAPILatLongSubmit">Submit</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public EventCallback<WeatherAPICurrentModel?> ReturnData { get; set; }
+
+    public void ClearForm()
+    {
+        waLatLongError?.Clear();
+    }
+
+    private LatLongViewModel? waLatLongViewModel = new();
+    private Dictionary<string, List<ProblemDetails>>? waLatLongError { get; set; } = [];
+
+    private async Task WeatherAPILatLongSubmit()
+    {
+        ClearForm();
+
+        var resultObj = await WeatherAPIResults.GetWeatherAPIWeatherByLatLongResult(waLatLongViewModel.Latitude, waLatLongViewModel.Longitude, sender);
+
+        if (resultObj.IsSuccess)
+        {
+            await ReturnData.InvokeAsync(resultObj.Value);
+        }
+        else
+        {
+            if (resultObj.Exception != null)
+            {
+                waLatLongError = resultObj.Exception;
+            }
+        }
+    }
+}

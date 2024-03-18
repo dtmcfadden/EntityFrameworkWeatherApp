@@ -1,0 +1,52 @@
+﻿@using global::WeatherAPI.Models.OpenWeather
+@using EntityFrameworkWeatherApp.Components.Shared
+@using EntityFrameworkWeatherApp.Models
+
+<CardTemplate CardTitle="Root">
+    <CardChildContent>
+        <ListTemplate Items="listItems" TItem="LabelDivTemplateModel" Context="item" SkipNull="false">
+            <ListItemTemplate>
+                <LabelDivTemplate Subheading="@item.Subheading" ContentText="@item.ContentText" />
+            </ListItemTemplate>
+        </ListTemplate>
+    </CardChildContent>
+</CardTemplate>
+
+@code {
+    [Parameter]
+    public OpenWeatherDataModel? Model { get; set; }
+
+    [Parameter]
+    public bool ClearList { get; set; } = true;
+
+    private List<LabelDivTemplateModel> listItems = new();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (ClearList)
+            listItems = new();
+
+        if (Model?.CityName is not null)
+            listItems.Add(new() { Subheading = "City Name", ContentText = Model?.CityName.ToString() });
+
+        if (Model?.CityId is not null)
+            listItems.Add(new() { Subheading = "City ID", ContentText = Model?.CityId.ToString() });
+
+        if (Model?.Dt is not null)
+            listItems.Add(new() { Subheading = "Date Time", ContentText = Model?.Dt.ToString() });
+
+        if (Model?.BaseType is not null)
+            listItems.Add(new() { Subheading = "Base Type", ContentText = Model?.BaseType.ToString() });
+
+        if (Model?.Visibility is not null)
+            listItems.Add(new() { Subheading = "Visibility", ContentText = Model?.Visibility.ToString() });
+
+        if (Model?.Timezone is not null)
+            listItems.Add(new() { Subheading = "Timezone", ContentText = Model?.Timezone.ToString() });
+
+        if (Model?.Cod is not null)
+            listItems.Add(new() { Subheading = "Cod", ContentText = Model?.Cod.ToString() });
+    }
+}

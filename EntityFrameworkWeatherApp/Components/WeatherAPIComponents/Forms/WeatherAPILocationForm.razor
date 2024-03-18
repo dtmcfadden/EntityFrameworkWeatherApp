@@ -1,0 +1,58 @@
+﻿@using EntityFrameworkWeatherApp.Models
+@using EntityFrameworkWeatherApp.Mediator.WeatherAPI
+@using EntityFrameworkWeatherApp.Components.Shared
+@using Microsoft.AspNetCore.Mvc
+@using global::WeatherAPI.Models.WeatherAPI
+@inject ISender sender
+
+<EditForm method="get" Model="@waLocationNameViewModel" OnValidSubmit="@WeatherAPILocationSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <ExceptionDisplayTemplate exception="@waLocationError" />
+    <div class="row border grid">
+        <div class="col-8">
+            <div class="form-floating">
+                <InputText type="text" class="form-control selectclick" id="openweatherLocation" placeholder="Location" @bind-Value="waLocationNameViewModel!.Location" />
+                <label for="openweatherLocation">Location</label>
+                <ValidationMessage For="() => waLocationNameViewModel.Location" />
+            </div>
+        </div>
+        <div class="col-4 pt-2">
+            <div class="form-floating">
+                <button type="submit" class="btn btn-primary" id="openweatherLocationSubmit">Submit</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public EventCallback<WeatherAPICurrentModel?> ReturnData { get; set; }
+
+    public void ClearForm()
+    {
+        waLocationError?.Clear();
+    }
+
+    private LocationNameViewModel? waLocationNameViewModel = new();
+    private Dictionary<string, List<ProblemDetails>>? waLocationError { get; set; } = [];
+
+    private async Task WeatherAPILocationSubmit()
+    {
+        ClearForm();
+
+        var resultObj = await WeatherAPIResults.GetWeatherAPIWeatherByLocationNameResult(waLocationNameViewModel.Location, sender);
+
+        if (resultObj.IsSuccess)
+        {
+            await ReturnData.InvokeAsync(resultObj.Value);
+        }
+        else
+        {
+            if (resultObj.Exception != null)
+            {
+                waLocationError = resultObj.Exception;
+            }
+        }
+    }
+}

@@ -1,0 +1,31 @@
+﻿@using global::WeatherAPI.Models.WeatherAPI
+@using EntityFrameworkWeatherApp.Components.WeatherAPIComponents.Cards.WeatherAPI
+
+@if (Model is not null)
+{
+    <div class="row">
+        @if (Model?.Current is not null)
+        {
+            <div class="col p-1">
+                <WeatherAPIDataCurrentCard Model="@Model.Current" />
+            </div>
+        }
+        @if (Model?.Location is not null)
+        {
+            <div class="col p-1">
+                <WeatherAPIDataLocationCard Model="@Model.Location" />
+            </div>
+        }
+        @if (Model?.Current.Condition is not null)
+        {
+            <div class="col p-1">
+                <WeatherAPIDataConditionCard Model="@Model.Current.Condition" />
+            </div>
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public WeatherAPICurrentModel? Model { get; set; }
+}

@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>f81b0f13-cc90-45f1-b6da-70e6ef15c006</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Mvc" Version="8.0.0" />
+    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.0.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
+    <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WeatherAPI\WeatherAPI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="WeatherAPI.DevTests" />
+    <InternalsVisibleTo Include="WeatherAPI.UnitTests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Controllers\WeatherAPI\" />
+    <Folder Include="Data\" />
+    <Folder Include="Requests\" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,55 @@
+﻿@using global::WeatherAPI.Models.OpenWeather
+@using EntityFrameworkWeatherApp.Components.Shared
+@using EntityFrameworkWeatherApp.Models
+
+<CardTemplate CardTitle="Main">
+    <CardChildContent>
+        <ListTemplate Items="listItems" TItem="LabelDivTemplateModel" Context="item" SkipNull="false">
+            <ListItemTemplate>
+                <LabelDivTemplate Subheading="@item.Subheading" ContentText="@item.ContentText" />
+            </ListItemTemplate>
+        </ListTemplate>
+    </CardChildContent>
+</CardTemplate>
+
+@code {
+    [Parameter]
+    public OpenWeatherDataMainModel? Model { get; set; }
+
+    [Parameter]
+    public bool ClearList { get; set; } = true;
+
+    private List<LabelDivTemplateModel> listItems = [];
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (ClearList)
+            listItems = new();
+
+        if (Model?.Temperature is not null)
+            listItems.Add(new() { Subheading = "Temperature", ContentText = Model?.Temperature.ToString() });
+
+        if (Model?.FeelsLike is not null)
+            listItems.Add(new() { Subheading = "Feels Like", ContentText = Model?.FeelsLike.ToString() });
+
+        if (Model?.TemperatureMin is not null)
+            listItems.Add(new() { Subheading = "Minimum", ContentText = Model?.TemperatureMin.ToString() });
+
+        if (Model?.TemperatureMax is not null)
+            listItems.Add(new() { Subheading = "Maximum", ContentText = Model?.TemperatureMax.ToString() });
+
+        if (Model?.Pressure is not null)
+            listItems.Add(new() { Subheading = "Pressure", ContentText = Model?.Pressure.ToString() });
+
+        if (Model?.Humidity is not null)
+            listItems.Add(new() { Subheading = "Humidity", ContentText = Model?.Humidity.ToString() });
+
+        if (Model?.SeaLevel is not null)
+            listItems.Add(new() { Subheading = "Sea Level", ContentText = Model?.SeaLevel.ToString() });
+
+        if (Model?.GroundLevel is not null)
+            listItems.Add(new() { Subheading = "Ground Level", ContentText = Model?.GroundLevel.ToString() });
+    }
+}

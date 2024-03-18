@@ -1,0 +1,37 @@
+﻿@using global::WeatherAPI.Models.OpenWeather
+@using EntityFrameworkWeatherApp.Components.Shared
+@using EntityFrameworkWeatherApp.Models
+
+<CardTemplate CardTitle="Snow">
+    <CardChildContent>
+        <ListTemplate Items="listItems" TItem="LabelDivTemplateModel" Context="item" SkipNull="false">
+            <ListItemTemplate>
+                <LabelDivTemplate Subheading="@item.Subheading" ContentText="@item.ContentText" />
+            </ListItemTemplate>
+        </ListTemplate>
+    </CardChildContent>
+</CardTemplate>
+
+@code {
+    [Parameter]
+    public OpenWeatherDataSnowModel? Model { get; set; }
+
+    [Parameter]
+    public bool ClearList { get; set; } = true;
+
+    private List<LabelDivTemplateModel> listItems = new();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (ClearList)
+            listItems = new();
+
+        if (Model?.OneHourVolume is not null)
+            listItems.Add(new() { Subheading = "One Hour Volume", ContentText = Model?.OneHourVolume.ToString() });
+
+        if (Model?.ThreeHourVolume is not null)
+            listItems.Add(new() { Subheading = "Three Hour Volume", ContentText = Model?.ThreeHourVolume.ToString() });
+    }
+}

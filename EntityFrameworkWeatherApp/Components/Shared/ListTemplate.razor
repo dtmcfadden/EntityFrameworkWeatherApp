@@ -1,0 +1,24 @@
+﻿@typeparam TItem
+<ol class="list-group">
+    @if (@Items is not null){
+        foreach(var item in Items){
+            if ((SkipNull == false) || (@ListItemTemplate is null && SkipNull == true))
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    @ListItemTemplate(item)
+                </li>
+            }
+        }
+    }
+</ol>
+
+@code {
+    [Parameter]
+    public bool SkipNull { get; set; } = true;
+
+    [Parameter]
+    public RenderFragment<TItem>? ListItemTemplate { get; set; }
+
+    [Parameter]
+    public List<TItem>? Items { get; set; }
+}

@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNetCore.Mvc
+@if(exception is not null)
+{
+    <div class="validation-message">
+        <table class="table table-sm text-danger m-0">
+        @foreach (var item in exception)
+        {
+            <tr>
+                <td>@item.Key</td>
+                <td>
+                    @if(item.Value is not null){
+                        <table class="table table-sm text-danger m-0">
+                            <thead>
+                                <tr>
+                                        @if (item.Value[0].Status is not null)
+                                        {
+                                            <th>Status</th>
+                                        }
+                                        @if (item.Value[0].Detail is not null)
+                                        {
+                                            <th>Detail</th>
+                                        }
+                                        @if (item.Value[0].Title is not null)
+                                        {
+                                            <th>Title</th>
+                                        }
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach(var error in item.Value)
+                            {
+                                <tr>
+                                        @if (@error.Status is not null)
+                                        {
+                                            <td>@error.Status</td>
+                                        }
+                                        @if (@error.Detail is not null)
+                                        {
+                                            <td>@error.Detail</td>
+                                        }
+                                        @if (@error.Title is not null)
+                                        {
+                                            <td>@error.Title</td>
+                                        }
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    }
+                </td>
+            </tr>
+        }
+        </table>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Dictionary<string, List<ProblemDetails>>? exception { get; set; }
+}

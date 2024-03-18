@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model LatLongViewModel
+
+<h1>Get Weather</h1>
+
+<form method="get">
+    <div>
+        <label class="form-label">Latitude</label>
+        <input type="text" class="form-control" asp-for="Latitude"/>
+    </div>
+
+    <div>
+        <label class="form-label">Longitude</label>
+        <input type="text" class="form-control" asp-for="Longitude" />
+    </div>
+
+    <div>
+        <input type="button" class="btn btn-primary" />
+    </div>
+</form>

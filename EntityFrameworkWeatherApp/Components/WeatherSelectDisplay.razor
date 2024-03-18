@@ -1,0 +1,125 @@
+﻿@using EntityFrameworkWeatherApp.Components.WeatherAPIComponents.Views
+@using EntityFrameworkWeatherApp.Components.WeatherAPIComponents.Forms
+@using System.Text.Json
+@using global::WeatherAPI.Models.OpenWeather
+@using global::WeatherAPI.Models.WeatherAPI
+
+<ul class="nav nav-tabs" id="weatherSelectTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="openweather-tab" data-bs-toggle="tab" data-bs-target="#openweather-tab-pane" type="button" role="tab" aria-controls="openweather-tab-pane" aria-selected="true">Open Weather</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="weatherapi-tab" data-bs-toggle="tab" data-bs-target="#weatherapi-tab-pane" type="button" role="tab" aria-controls="weatherapi-tab-pane" aria-selected="false">Weather API</button>
+    </li>
+</ul>
+<div class="tab-content border p-1" id="weatherSelectTabContent">
+    <div class="tab-pane fade show active" id="openweather-tab-pane" role="tabpanel" aria-labelledby="openweather-tab" tabindex="10">
+        <div class="container">
+            <div>
+                <OpenWeatherLocationForm @ref="openWeatherLocationForm"
+                                         ReturnData="@(async (value) => {
+                        await Task.Yield();
+                        HandleReturnData<OpenWeatherDataModel>(value);
+                    })" />
+            </div>
+            <div>
+                <OpenWeatherLatLongForm @ref="openWeatherLatLongForm"
+                                        ReturnData="@(async (value) => {
+                        await Task.Yield();
+                        HandleReturnData<OpenWeatherDataModel>(value);
+                    })" />
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="weatherapi-tab-pane" role="tabpanel" aria-labelledby="weatherapi-tab" tabindex="11">
+        <div class="container">
+            <div>
+                <WeatherAPILocationForm @ref="weatherAPILocationForm"
+                                        ReturnData="@(async (value) => {
+                        await Task.Yield();
+                        HandleReturnData<WeatherAPICurrentModel>(value);
+                    })" />
+            </div>
+            <div>
+                <WeatherAPILatLongForm @ref="weatherAPILatLongForm"
+                                       ReturnData="@(async (value) => {
+                        await Task.Yield();
+                        HandleReturnData<WeatherAPICurrentModel>(value);
+                    })" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-7">
+        @if (@componentType is not null)
+        {
+            <DynamicComponent Type="@componentType"
+                              Parameters="@Parameters"
+                              @ref="weatherComponent" />
+        }
+    </div>
+    <div class="col-5">
+        @if (weatherJsonData is not null)
+        {
+            <pre class="text-start">
+                @(JsonSerializer.Serialize(weatherJsonData,
+                        new JsonSerializerOptions()
+                    {
+                        WriteIndented = true,
+                    }))
+                    </pre>
+        }
+    </div>
+</div>
+
+@code {
+    private DynamicComponent? weatherComponent;
+    private object? weatherJsonData;
+    private Type? componentType = null;
+    public Dictionary<string, object> Parameters { get; set; } = [];
+
+    private OpenWeatherLocationForm? openWeatherLocationForm;
+    private OpenWeatherLatLongForm? openWeatherLatLongForm;
+
+    private WeatherAPILocationForm? weatherAPILocationForm;
+    private WeatherAPILatLongForm? weatherAPILatLongForm;
+
+    private void HandleReturnData<T>(T? data)
+    {
+        ClearForms();
+        weatherJsonData = data;
+        Parameters = new() { { "Model", data } };
+        componentType = GetComponentTypeByDataModel(data.GetType());
+    }
+
+    private void ClearForms()
+    {
+        componentType = null;
+        openWeatherLocationForm?.ClearForm();
+        openWeatherLatLongForm?.ClearForm();
+        weatherAPILocationForm?.ClearForm();
+        weatherAPILatLongForm?.ClearForm();
+    }
+
+    private Type? GetComponentTypeByDataModel(Type modelType)
+    {
+        if (weatherComponent is not null)
+        {
+            var instance = weatherComponent.Instance;
+            if (instance != null && instance.GetType() != modelType)
+            {
+                instance = null;
+            }
+        }
+
+        if (modelType == typeof(OpenWeatherDataModel))
+            return typeof(OpenWeatherDataView);
+
+        if (modelType == typeof(WeatherAPICurrentModel))
+            return typeof(WeatherAPIDataView);
+
+        return null;
+    }
+}

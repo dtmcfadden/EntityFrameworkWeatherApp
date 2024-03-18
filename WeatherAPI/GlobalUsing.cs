@@ -1,0 +1,9 @@
+﻿global using EntityFrameworkWeatherApp.Abstractions.Errors;
+global using EntityFrameworkWeatherApp.Abstractions.Results;
+global using FluentValidation;
+global using System.Net.Http.Json;
+global using WeatherAPI.Abstractions;
+global using WeatherAPI.Entities;
+global using WeatherAPI.Options;
+global using WeatherAPI.Services;
+global using WeatherAPI.Services.Interface;

@@ -1,0 +1,27 @@
+﻿<div class="w-100">
+    <div class="ms-2 me-auto text-start">
+        @if (@Subheading is not null)
+        {
+            <div class="fw-bold">@Subheading</div>
+        }
+        @if (@ContentText is not null)
+        {
+            <div class="ps-2">@ContentText</div>
+        }
+    </div>
+    @if (@Badgetext is not null)
+    {
+        <span class="badge text-bg-primary rounded-pill">@Badgetext</span>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string? Subheading { get; set; }
+
+    [Parameter]
+    public string? ContentText { get; set; }
+
+    [Parameter]
+    public string? Badgetext { get; set; }
+}

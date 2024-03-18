@@ -1,0 +1,37 @@
+﻿@using global::WeatherAPI.Models.OpenWeather
+@using EntityFrameworkWeatherApp.Components.Shared
+@using EntityFrameworkWeatherApp.Models
+
+<CardTemplate CardTitle="Coordinates">
+    <CardChildContent>
+        <ListTemplate Items="listItems" TItem="LabelDivTemplateModel" Context="item" SkipNull="false">
+            <ListItemTemplate>
+                <LabelDivTemplate Subheading="@item.Subheading" ContentText="@item.ContentText" />
+            </ListItemTemplate>
+        </ListTemplate>
+    </CardChildContent>
+</CardTemplate>
+
+@code {
+    [Parameter]
+    public OpenWeatherDataCoordModel? Model { get; set; }
+
+    [Parameter]
+    public bool ClearList { get; set; } = true;
+
+    private List<LabelDivTemplateModel> listItems = new();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (ClearList)
+            listItems = new();
+
+        listItems = new List<LabelDivTemplateModel>()
+        {
+            new () { Subheading = "Latitude",  ContentText = Model?.Latitude.ToString() },
+            new () { Subheading = "Longitude",  ContentText = Model?.Longitude.ToString() }
+        };
+    }
+}

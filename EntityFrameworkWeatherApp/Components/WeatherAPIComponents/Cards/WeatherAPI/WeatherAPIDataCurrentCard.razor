@@ -1,0 +1,99 @@
+﻿@using global::WeatherAPI.Models.WeatherAPI
+@using EntityFrameworkWeatherApp.Components.Shared
+@using EntityFrameworkWeatherApp.Models
+
+<CardTemplate CardTitle="Current">
+    <CardChildContent>
+        <ListTemplate Items="listItems" TItem="LabelDivTemplateModel" Context="item" SkipNull="false">
+            <ListItemTemplate>
+                <LabelDivTemplate Subheading="@item.Subheading" ContentText="@item.ContentText" />
+            </ListItemTemplate>
+        </ListTemplate>
+    </CardChildContent>
+</CardTemplate>
+
+@code {
+    [Parameter]
+    public WeatherAPICurrentCurrentModel? Model { get; set; }
+
+    [Parameter]
+    public bool ClearList { get; set; } = true;
+
+    private List<LabelDivTemplateModel> listItems = [];
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (ClearList)
+            listItems = new();
+
+        if (Model?.LastUpdatedEpoch is not null)
+            listItems.Add(new() { 
+                Subheading = "Last Updated Epoch", 
+                ContentText = Model?.LastUpdatedEpoch.ToString() });
+
+        if (Model?.LastUpdated is not null)
+            listItems.Add(new() { Subheading = "Last Updated", ContentText = Model?.LastUpdated.ToString() });
+
+        if (Model?.TempC is not null)
+            listItems.Add(new() { Subheading = "Celsius", ContentText = Model?.TempC.ToString() });
+
+        if (Model?.TempF is not null)
+            listItems.Add(new() { Subheading = "Fahrenheit", ContentText = Model?.TempF.ToString() });
+
+        if (Model?.IsDay is not null)
+            listItems.Add(new() { Subheading = "Is Day", ContentText = Model?.IsDay.ToString() });
+
+        if (Model?.WindMph is not null)
+            listItems.Add(new() { Subheading = "Wind Mph", ContentText = Model?.WindMph.ToString() });
+
+        if (Model?.WindKph is not null)
+            listItems.Add(new() { Subheading = "Wind Kph", ContentText = Model?.WindKph.ToString() });
+
+        if (Model?.WindDegree is not null)
+            listItems.Add(new() { Subheading = "Wind Degree", ContentText = Model?.WindDegree.ToString() });
+
+        if (Model?.WindDir is not null)
+            listItems.Add(new() { Subheading = "Wind Direction", ContentText = Model?.WindDir.ToString() });
+
+        if (Model?.PressureMb is not null)
+            listItems.Add(new() { Subheading = "Pressure Mb", ContentText = Model?.PressureMb.ToString() });
+
+        if (Model?.PressureIn is not null)
+            listItems.Add(new() { Subheading = "Pressure In", ContentText = Model?.PressureIn.ToString() });
+
+        if (Model?.PrecipMm is not null)
+            listItems.Add(new() { Subheading = "PrecipMm", ContentText = Model?.PrecipMm.ToString() });
+
+        if (Model?.PrecipIn is not null)
+            listItems.Add(new() { Subheading = "PrecipIn", ContentText = Model?.PrecipIn.ToString() });
+
+        if (Model?.Humidity is not null)
+            listItems.Add(new() { Subheading = "Humidity", ContentText = Model?.Humidity.ToString() });
+
+        if (Model?.Cloud is not null)
+            listItems.Add(new() { Subheading = "Cloud", ContentText = Model?.Cloud.ToString() });
+
+        if (Model?.FeelsLikeC is not null)
+            listItems.Add(new() { Subheading = "Feels Like Celsius", ContentText = Model?.FeelsLikeC.ToString() });
+
+        if (Model?.FeelsLikeF is not null)
+            listItems.Add(new() { Subheading = "Feels Like Fahrenheit", ContentText = Model?.FeelsLikeF.ToString() });
+
+        if (Model?.VisibilityKm is not null)
+            listItems.Add(new() { Subheading = "Visibility Km", ContentText = Model?.VisibilityKm.ToString() });
+
+        if (Model?.VisibilityMiles is not null)
+            listItems.Add(new() { Subheading = "Visibility Miles", ContentText = Model?.VisibilityMiles.ToString() });
+
+        if (Model?.Ultraviolet is not null)
+            listItems.Add(new() { Subheading = "Ultraviolet", ContentText = Model?.Ultraviolet.ToString() });
+
+        if (Model?.GustMph is not null)
+            listItems.Add(new() { Subheading = "Gust Mph", ContentText = Model?.GustMph.ToString() });
+
+        if (Model?.GustKph is not null)
+            listItems.Add(new() { Subheading = "Gust Kph", ContentText = Model?.GustKph.ToString() });
+    }
+}
