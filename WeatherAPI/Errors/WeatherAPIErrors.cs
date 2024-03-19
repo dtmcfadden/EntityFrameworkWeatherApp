@@ -19,4 +19,9 @@ public static class WeatherAPIErrors
         new("WeatherAPI.ErrorResponseFromWeatherAPI",
             $"Error response from WeatherAPI. ({LogMessage})",
             LogMessage);
+
+    public static Error APIKeyIsMissing(string? LogMessage = null) =>
+        new("WeatherAPI.APIKeyIsMissing",
+            "API Key is missing. Please provide.",
+            LogMessage);
 }

@@ -8,7 +8,7 @@ public class OpenWeatherHTTPServiceTests : IClassFixture<WeatherAppWebApplicatio
     private readonly ITestOutputHelper _output;
     private readonly OpenWeatherHTTPService _openWeatherHTTPService;
     private readonly Mock<IOpenWeatherHTTPService> _mockOpenWeatherHTTPService;
-    private readonly IOptions<OpenWeatherOptions>? _openWeatherOptions;
+    //private readonly IOptions<OpenWeatherOptions>? _openWeatherOptions;
     //private readonly HttpClient _client = new();
 
     public OpenWeatherHTTPServiceTests(ITestOutputHelper outputHelper, WeatherAppWebApplicationFactory<Program> factory)
@@ -59,6 +59,29 @@ public class OpenWeatherHTTPServiceTests : IClassFixture<WeatherAppWebApplicatio
         /// Assert
         Assert.Equal(result.GetError?.Code, errorCode);
         Assert.Equal(result.GetError?.LogMessage, logMessage);
+        Assert.True(result.IsFailure);
+    }
+
+    [Fact]
+    public async Task GivenAPIKeyIsEmpty_OpenWeatherGetWeatherByLatLong_GetResultIsFailure()
+    {
+        // Arrange
+        var latLongEntity = new LatLongEntity(1, 1);
+        var owOptions = _factory.OpenWeatherOptions;
+        owOptions.Value.APIKey = "";
+
+        var owHTTPService = new OpenWeatherHTTPService(
+                owOptions,
+                _factory.CreateClient());
+
+        // Act
+        var result = await owHTTPService.GetWeatherByLatLong(latLongEntity);
+        _output.WriteLine(JsonSerializer.Serialize(result.Value));
+        _output.WriteLine(JsonSerializer.Serialize(result.GetError));
+
+        /// Assert
+        Assert.Equal("OpenWeather.APIKeyIsMissing", result.GetError?.Code);
+        Assert.Null(result.GetError?.LogMessage);
         Assert.True(result.IsFailure);
     }
 

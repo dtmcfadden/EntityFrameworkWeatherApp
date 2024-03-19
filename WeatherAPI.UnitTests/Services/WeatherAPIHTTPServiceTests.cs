@@ -65,6 +65,29 @@ public class WeatherAPIHTTPServiceTests : IClassFixture<WeatherAppWebApplication
         Assert.True(result.IsFailure);
     }
 
+    [Fact]
+    public async Task GivenAPIKeyIsEmpty_WeatherAPIGetWeatherByLatLong_GetResultIsFailure()
+    {
+        // Arrange
+        var latLongEntity = new LatLongEntity(1, 1);
+        var waOptions = _factory.WeatherAPIOptions;
+        waOptions.Value.APIKey = "";
+
+        var waHTTPService = new WeatherAPIHTTPService(
+                waOptions,
+                _factory.CreateClient());
+
+        // Act
+        var result = await waHTTPService.GetWeatherByLatLong(latLongEntity);
+        _output.WriteLine(JsonSerializer.Serialize(result.Value));
+        _output.WriteLine(JsonSerializer.Serialize(result.GetError));
+
+        /// Assert
+        Assert.Equal("WeatherAPI.APIKeyIsMissing", result.GetError?.Code);
+        Assert.Null(result.GetError?.LogMessage);
+        Assert.True(result.IsFailure);
+    }
+
     //[Theory]
     //[InlineData("", "WeatherAPI.ErrorResponseFromWeatherAPI", "1003:Parameter q is missing.")]
     //[InlineData("bsblhsbhsb", "WeatherAPI.ErrorResponseFromWeatherAPI", "1006:No matching location found.")]
