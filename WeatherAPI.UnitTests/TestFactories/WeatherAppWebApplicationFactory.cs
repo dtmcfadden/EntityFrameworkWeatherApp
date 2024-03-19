@@ -13,9 +13,9 @@ public class WeatherAppWebApplicationFactory<TProgram> : WebApplicationFactory<T
     public WeatherAppWebApplicationFactory()
     {
         OpenWeatherOptions =
-            new OptionsWrapper<OpenWeatherOptions>(new() { APIKey = "" });
+            new OptionsWrapper<OpenWeatherOptions>(new() { APIKey = "key" });
         WeatherAPIOptions =
-            new OptionsWrapper<WeatherAPIOptions>(new() { APIKey = "" });
+            new OptionsWrapper<WeatherAPIOptions>(new() { APIKey = "key" });
 
         OpenWeatherHTTPServiceMock =
             WeatherAppWebApplicationFactory<TProgram>.SetupOpenWeatherHTTPServiceMock();

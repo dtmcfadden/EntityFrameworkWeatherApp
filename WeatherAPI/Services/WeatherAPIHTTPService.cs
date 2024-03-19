@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using WeatherAPI.Errors;
 using WeatherAPI.Models.WeatherAPI;
-using WeatherAPI.Services.Interface;
 
 namespace WeatherAPI.Services;
 public sealed class WeatherAPIHTTPService : IWeatherAPIHTTPService
@@ -10,17 +9,24 @@ public sealed class WeatherAPIHTTPService : IWeatherAPIHTTPService
     private readonly HttpClient _client;
     private readonly string _weatherPath = "current.json?";
     private readonly string _apiKey;
+    private readonly Error? _isImplemented;
 
     public WeatherAPIHTTPService(IOptions<WeatherAPIOptions> weatherAPIOptions, HttpClient client)
     {
         _weatherAPIOptions = weatherAPIOptions.Value;
         _apiKey = _weatherAPIOptions.APIKey;
         _client = client;
+
+        if (string.IsNullOrEmpty(_apiKey) == true)
+            _isImplemented = WeatherAPIErrors.APIKeyIsMissing();
     }
 
     public async Task<Result<WeatherAPICurrentModel?>> GetWeatherByLatLong(LatLongEntity latLong,
         CancellationToken cancellationToken = default)
     {
+        if (_isImplemented != null)
+            return new Result<WeatherAPICurrentModel?>(_isImplemented);
+
         if (latLong.IsEmpty())
             return new Result<WeatherAPICurrentModel?>(WeatherAPIErrors.LatOrLongIsNull(latLong.ToString()));
 
@@ -41,6 +47,9 @@ public sealed class WeatherAPIHTTPService : IWeatherAPIHTTPService
     public async Task<Result<WeatherAPICurrentModel?>> GetWeatherByLocationName(LocationEntity locationName,
         CancellationToken cancellationToken = default)
     {
+        if (_isImplemented != null)
+            return new Result<WeatherAPICurrentModel?>(_isImplemented);
+
         var url = $"{_weatherPath}key={_apiKey}&q={locationName}";
         var response = await GetResultFromWeatherAPI<WeatherAPICurrentModel>(url, cancellationToken);
 
@@ -50,6 +59,10 @@ public sealed class WeatherAPIHTTPService : IWeatherAPIHTTPService
     private async Task<Result<T?>> GetResultFromWeatherAPI<T>(string url, CancellationToken cancellationToken = default)
     {
         // https://app.swaggerhub.com/apis-docs/WeatherAPI.com/WeatherAPI/1.0.2#/APIs/realtime-weather
+
+        if (_isImplemented != null)
+            return new Result<T?>(_isImplemented);
+
         HttpResponseMessage response;
 
         try

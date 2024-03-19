@@ -16,6 +16,7 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
     private readonly string _geoZipVer = "geo/1.0/zip?";
 
     private readonly string _apiKey;
+    private readonly Error? _isImplemented;
 
     public OpenWeatherHTTPService(
         IOptions<OpenWeatherOptions> openWeatherOptions,
@@ -24,11 +25,17 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
         _openWeatherOptions = openWeatherOptions.Value;
         _apiKey = _openWeatherOptions.APIKey;
         _client = client;
+
+        if (string.IsNullOrEmpty(_apiKey) == true)
+            _isImplemented = OpenWeatherErrors.APIKeyIsMissing();
     }
 
     public async Task<Result<OpenWeatherDataModel?>> GetWeatherByLatLong(LatLongEntity latLong,
         CancellationToken cancellationToken = default)
     {
+        if (_isImplemented != null)
+            return new Result<OpenWeatherDataModel?>(_isImplemented);
+
         if (latLong.IsEmpty())
             return new Result<OpenWeatherDataModel?>(OpenWeatherErrors.LatOrLongIsNull(latLong.ToString()));
 
@@ -41,6 +48,9 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
     public async Task<Result<List<OpenWeatherGeoDirectModel?>?>?> GetGeoDirect(string LocationQuery,
         CancellationToken cancellationToken = default)
     {
+        if (_isImplemented != null)
+            return new Result<List<OpenWeatherGeoDirectModel?>?>(_isImplemented);
+
         var url = $"{_geoDirectVer}q={LocationQuery}&limit=1&appid={_apiKey}";
         var response = await GetResultFromOpenWeather<List<OpenWeatherGeoDirectModel?>?>(url, cancellationToken);
 
@@ -53,6 +63,9 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
     public async Task<Result<OpenWeatherGeoZipModel?>> GetGeoZip(string ZipQuery,
         CancellationToken cancellationToken = default)
     {
+        if (_isImplemented != null)
+            return new Result<OpenWeatherGeoZipModel?>(_isImplemented);
+
         var url = $"{_geoZipVer}zip={ZipQuery}&appid={_apiKey}";
         var response = await GetResultFromOpenWeather<OpenWeatherGeoZipModel?>(url, cancellationToken);
 
@@ -65,6 +78,9 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
     private async Task<Result<T?>> GetResultFromOpenWeather<T>(string url, CancellationToken cancellationToken = default)
     {
         HttpResponseMessage response;
+
+        if (_isImplemented != null)
+            return new Result<T?>(_isImplemented);
 
         try
         {

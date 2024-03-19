@@ -33,9 +33,13 @@ public static class OpenWeatherErrors
         new("OpenWeather.ErrorContactingOpenWeather",
             "Error contacting OpenWeather",
             LogMessage);
-
     public static Error ErrorResponseFromOpenWeather(string? LogMessage = null) =>
         new("OpenWeather.ErrorResponseFromOpenWeather",
             "Error response from OpenWeather.",
+            LogMessage);
+
+    public static Error APIKeyIsMissing(string? LogMessage = null) =>
+        new("OpenWeather.APIKeyIsMissing",
+            "API Key is missing. Please provide.",
             LogMessage);
 }
