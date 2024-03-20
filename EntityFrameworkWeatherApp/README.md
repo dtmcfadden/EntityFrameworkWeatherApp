@@ -30,12 +30,8 @@
    4. The Secrets should follow the below structure
    ```json
    {
-   	"OpenWeather": {
-   		"APIKey": "Insert Key Here"
-   	},
-   	"WeatherAPI": {
-   		"APIKey": "Insert Key Here"
-   	}
+   	"openweather-apikey": "Insert Key Here",
+   	"weatherapi-apikey": "Insert Key Here"
    }
    ```
 

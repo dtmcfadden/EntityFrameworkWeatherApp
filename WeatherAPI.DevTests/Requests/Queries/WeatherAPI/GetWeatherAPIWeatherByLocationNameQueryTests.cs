@@ -5,7 +5,7 @@ public class GetWeatherAPIWeatherByLocationNameQueryTests :
     private readonly WeatherAppWebApplicationFactory<Program> _factory;
     private readonly ITestOutputHelper _output;
     private readonly WeatherAPIHTTPService _weatherAPIHTTPService;
-    private readonly IOptions<WeatherAPIOptions>? _weatherAPIOptions;
+    private readonly IOptions<EnvironmentOptions>? _environmentOptions;
     private readonly HttpClient _client = new();
     private readonly GetWeatherAPIWeatherByLocationNameHandler _getWeatherAPIWeatherByLocationNameHandler;
 
@@ -19,8 +19,8 @@ public class GetWeatherAPIWeatherByLocationNameQueryTests :
         {
             _client.BaseAddress = _factory.WeatherAPIClientOptions.BaseAddress;
 
-            _weatherAPIOptions = scope.ServiceProvider.GetRequiredService<IOptions<WeatherAPIOptions>>();
-            _weatherAPIHTTPService = new WeatherAPIHTTPService(_weatherAPIOptions, _client);
+            _environmentOptions = scope.ServiceProvider.GetRequiredService<IOptions<EnvironmentOptions>>();
+            _weatherAPIHTTPService = new WeatherAPIHTTPService(_environmentOptions, _client);
             _getWeatherAPIWeatherByLocationNameHandler = new GetWeatherAPIWeatherByLocationNameHandler(_weatherAPIHTTPService);
         }
     }
