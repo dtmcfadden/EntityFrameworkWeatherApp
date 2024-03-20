@@ -1,4 +1,4 @@
-﻿# EntityFrameworkWeatherApp
+# EntityFrameworkWeatherApp
 
 ### Purpose
 

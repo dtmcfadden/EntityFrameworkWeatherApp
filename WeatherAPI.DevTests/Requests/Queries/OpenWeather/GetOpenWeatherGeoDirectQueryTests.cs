@@ -4,7 +4,7 @@ public class GetOpenWeatherGeoDirectQueryTests : IClassFixture<WeatherAppWebAppl
     private readonly WeatherAppWebApplicationFactory<Program> _factory;
     private readonly ITestOutputHelper _output;
     private readonly OpenWeatherHTTPService _openWeatherHTTPService;
-    private readonly IOptions<OpenWeatherOptions>? _openWeatherOptions;
+    private readonly IOptions<EnvironmentOptions>? _environmentOptions;
     private readonly HttpClient _client = new();
     private readonly GetOpenWeatherGeoDirectHandler _getOpenWeatherGeoDirectHandler;
 
@@ -17,8 +17,8 @@ public class GetOpenWeatherGeoDirectQueryTests : IClassFixture<WeatherAppWebAppl
         {
             _client.BaseAddress = _factory.OpenWeatherClientOptions.BaseAddress;
 
-            _openWeatherOptions = scope.ServiceProvider.GetRequiredService<IOptions<OpenWeatherOptions>>();
-            _openWeatherHTTPService = new OpenWeatherHTTPService(_openWeatherOptions, _client);
+            _environmentOptions = scope.ServiceProvider.GetRequiredService<IOptions<EnvironmentOptions>>();
+            _openWeatherHTTPService = new OpenWeatherHTTPService(_environmentOptions, _client);
             _getOpenWeatherGeoDirectHandler = new GetOpenWeatherGeoDirectHandler(_openWeatherHTTPService);
         }
     }
