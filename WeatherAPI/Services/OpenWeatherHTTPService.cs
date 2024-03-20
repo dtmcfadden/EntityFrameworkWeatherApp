@@ -9,7 +9,7 @@ namespace WeatherAPI.Services;
 /// </summary>
 public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
 {
-    private readonly EnvironmentOptions _environmentOptions;
+    private readonly OpenWeatherOptions _openWeatherOptions;
     private readonly HttpClient _client;
     private readonly string _dataWeatherVer = "data/2.5/weather?";
     private readonly string _geoDirectVer = "geo/1.0/direct?";
@@ -19,11 +19,11 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
     private readonly Error? _isImplemented;
 
     public OpenWeatherHTTPService(
-        IOptions<EnvironmentOptions> environmentOptions,
+        IOptions<OpenWeatherOptions> openWeatherOptions,
         HttpClient client)
     {
-        _environmentOptions = environmentOptions.Value;
-        _apiKey = _environmentOptions.OpenWeatherApiKey;
+        _openWeatherOptions = openWeatherOptions.Value;
+        _apiKey = _openWeatherOptions.APIKey;
         _client = client;
 
         if (string.IsNullOrEmpty(_apiKey) == true)

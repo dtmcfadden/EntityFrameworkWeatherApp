@@ -19,7 +19,7 @@ public class WeatherAPIHTTPServiceTests : IClassFixture<WeatherAppWebApplication
         _mockWeatherAPIHTTPService = _factory.WeatherAPIHTTPServiceMock;
 
         _weatherAPIHTTPService = new WeatherAPIHTTPService(
-                _factory.EnvironmentOptions,
+                _factory.WeatherAPIOptions,
                 _factory.CreateClient());
     }
 
@@ -70,8 +70,8 @@ public class WeatherAPIHTTPServiceTests : IClassFixture<WeatherAppWebApplication
     {
         // Arrange
         var latLongEntity = new LatLongEntity(1, 1);
-        var waOptions = _factory.EnvironmentOptions;
-        waOptions.Value.WeatherAPIApiKey = "";
+        var waOptions = _factory.WeatherAPIOptions;
+        waOptions.Value.APIKey = "";
 
         var waHTTPService = new WeatherAPIHTTPService(
                 waOptions,

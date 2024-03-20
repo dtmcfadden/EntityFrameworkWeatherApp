@@ -4,7 +4,7 @@ public class GetOpenWeatherGeoZipQueryTests : IClassFixture<WeatherAppWebApplica
     private readonly WeatherAppWebApplicationFactory<Program> _factory;
     private readonly ITestOutputHelper _output;
     private readonly OpenWeatherHTTPService _openWeatherHTTPService;
-    private readonly IOptions<EnvironmentOptions>? _environmentOptions;
+    private readonly IOptions<OpenWeatherOptions>? _openWeatherOptions;
     private readonly HttpClient _client = new();
     private readonly GetOpenWeatherGeoZipHandler _getOpenWeatherGeoZipHandler;
 
@@ -17,8 +17,8 @@ public class GetOpenWeatherGeoZipQueryTests : IClassFixture<WeatherAppWebApplica
         {
             _client.BaseAddress = _factory.OpenWeatherClientOptions.BaseAddress;
 
-            _environmentOptions = scope.ServiceProvider.GetRequiredService<IOptions<EnvironmentOptions>>();
-            _openWeatherHTTPService = new OpenWeatherHTTPService(_environmentOptions, _client);
+            _openWeatherOptions = scope.ServiceProvider.GetRequiredService<IOptions<OpenWeatherOptions>>();
+            _openWeatherHTTPService = new OpenWeatherHTTPService(_openWeatherOptions, _client);
             _getOpenWeatherGeoZipHandler = new GetOpenWeatherGeoZipHandler(_openWeatherHTTPService);
         }
     }

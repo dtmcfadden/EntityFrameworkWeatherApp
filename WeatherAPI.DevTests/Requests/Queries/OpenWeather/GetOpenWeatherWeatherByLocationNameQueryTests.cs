@@ -7,7 +7,7 @@ public class GetOpenWeatherWeatherByLocationNameQueryTests : IClassFixture<Weath
     private readonly ITestOutputHelper _output;
     private readonly OpenWeatherHTTPService _openWeatherHTTPService;
     private readonly Mock<ISender> _sender;
-    private readonly IOptions<EnvironmentOptions>? _environmentOptions;
+    private readonly IOptions<OpenWeatherOptions>? _openWeatherOptions;
     private readonly LocationStringMatches _locationStringMatches = new();
     private readonly GetOpenWeatherGeoDirectHandler _getOpenWeatherGeoDirectHandler;
     private readonly GetOpenWeatherGeoZipHandler _getOpenWeatherGeoZipHandler;
@@ -24,8 +24,8 @@ public class GetOpenWeatherWeatherByLocationNameQueryTests : IClassFixture<Weath
         {
             _client.BaseAddress = _factory.OpenWeatherClientOptions.BaseAddress;
 
-            _environmentOptions = scope.ServiceProvider.GetRequiredService<IOptions<EnvironmentOptions>>();
-            _openWeatherHTTPService = new OpenWeatherHTTPService(_environmentOptions, _client);
+            _openWeatherOptions = scope.ServiceProvider.GetRequiredService<IOptions<OpenWeatherOptions>>();
+            _openWeatherHTTPService = new OpenWeatherHTTPService(_openWeatherOptions, _client);
             _getOpenWeatherGeoDirectHandler = new GetOpenWeatherGeoDirectHandler(_openWeatherHTTPService);
             _getOpenWeatherGeoZipHandler = new GetOpenWeatherGeoZipHandler(_openWeatherHTTPService);
             _getOpenWeatherWeatherByLocationNameHandler = new GetOpenWeatherWeatherByLocationNameHandler(

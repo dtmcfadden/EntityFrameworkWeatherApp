@@ -6,6 +6,7 @@ using WeatherAPI.Abstractions.Caching;
 using WeatherAPI.Common;
 using WeatherAPI.Entities.Validators;
 using WeatherAPI.Services.Caching;
+using WeatherAPI.Services.Interface;
 
 
 namespace WeatherAPI;
@@ -54,11 +55,15 @@ public static class RegisterServices
     {
         var weatherAPIConfiguration = ConfigurationSettings.GetConfigurationSettings();
 
-        services.Configure<EnvironmentOptions>(options =>
-        {
-            options.OpenWeatherApiKey = weatherAPIConfiguration.GetSection("openweather-apikey").Value;
-            options.WeatherAPIApiKey = weatherAPIConfiguration.GetSection("weatherapi-apikey").Value;
-        });
+        services.Configure<OpenWeatherOptions>(
+            config.GetChildren().Any(x => x.Key == OpenWeatherOptions.Name) ?
+            config.GetSection(OpenWeatherOptions.Name) :
+            weatherAPIConfiguration.GetSection(OpenWeatherOptions.Name));
+
+        services.Configure<WeatherAPIOptions>(
+            config.GetChildren().Any(x => x.Key == WeatherAPIOptions.Name) ?
+            config.GetSection(WeatherAPIOptions.Name) :
+            weatherAPIConfiguration.GetSection(WeatherAPIOptions.Name));
 
         return services;
     }

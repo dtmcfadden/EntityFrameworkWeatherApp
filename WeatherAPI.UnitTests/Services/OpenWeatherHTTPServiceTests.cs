@@ -19,7 +19,7 @@ public class OpenWeatherHTTPServiceTests : IClassFixture<WeatherAppWebApplicatio
         _mockOpenWeatherHTTPService = _factory.OpenWeatherHTTPServiceMock;
 
         _openWeatherHTTPService = new OpenWeatherHTTPService(
-                _factory.EnvironmentOptions,
+                _factory.OpenWeatherOptions,
                 _factory.CreateClient());
     }
 
@@ -67,8 +67,8 @@ public class OpenWeatherHTTPServiceTests : IClassFixture<WeatherAppWebApplicatio
     {
         // Arrange
         var latLongEntity = new LatLongEntity(1, 1);
-        var owOptions = _factory.EnvironmentOptions;
-        owOptions.Value.OpenWeatherApiKey = "";
+        var owOptions = _factory.OpenWeatherOptions;
+        owOptions.Value.APIKey = "";
 
         var owHTTPService = new OpenWeatherHTTPService(
                 owOptions,

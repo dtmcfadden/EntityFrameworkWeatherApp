@@ -6,7 +6,7 @@ public class OpenWeatherHTTPServiceTests : IClassFixture<WeatherAppWebApplicatio
     private readonly WeatherAppWebApplicationFactory<Program> _factory;
     private readonly ITestOutputHelper _output;
     private readonly OpenWeatherHTTPService _openWeatherHTTPService;
-    private readonly IOptions<EnvironmentOptions>? _environmentOptions;
+    private readonly IOptions<OpenWeatherOptions>? _openWeatherOptions;
     private readonly HttpClient _client = new();
 
     public OpenWeatherHTTPServiceTests(ITestOutputHelper outputHelper, WeatherAppWebApplicationFactory<Program> factory)
@@ -18,8 +18,8 @@ public class OpenWeatherHTTPServiceTests : IClassFixture<WeatherAppWebApplicatio
         {
             _client.BaseAddress = _factory.OpenWeatherClientOptions.BaseAddress;
 
-            _environmentOptions = scope.ServiceProvider.GetRequiredService<IOptions<EnvironmentOptions>>();
-            _openWeatherHTTPService = new OpenWeatherHTTPService(_environmentOptions, _client);
+            _openWeatherOptions = scope.ServiceProvider.GetRequiredService<IOptions<OpenWeatherOptions>>();
+            _openWeatherHTTPService = new OpenWeatherHTTPService(_openWeatherOptions, _client);
         }
     }
 
