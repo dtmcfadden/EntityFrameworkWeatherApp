@@ -9,6 +9,8 @@ public static partial class ConfigurationSettings
     /// </summary>
     public static IConfigurationRoot GetConfigurationSettings()
     {
+        //Environment.SetEnvironmentVariable("openweather-apikey", "TestKey");
+
         var returnConfiguration = new ConfigurationBuilder()
              .SetBasePath(Environment.CurrentDirectory)
              .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)

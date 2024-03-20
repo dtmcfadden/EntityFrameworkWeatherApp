@@ -5,16 +5,18 @@ using WeatherAPI.Models.WeatherAPI;
 namespace WeatherAPI.Services;
 public sealed class WeatherAPIHTTPService : IWeatherAPIHTTPService
 {
-    private readonly WeatherAPIOptions _weatherAPIOptions;
+    private readonly EnvironmentOptions _environmentOptions;
     private readonly HttpClient _client;
     private readonly string _weatherPath = "current.json?";
     private readonly string _apiKey;
     private readonly Error? _isImplemented;
 
-    public WeatherAPIHTTPService(IOptions<WeatherAPIOptions> weatherAPIOptions, HttpClient client)
+    public WeatherAPIHTTPService(
+        IOptions<EnvironmentOptions> environmentOptions,
+        HttpClient client)
     {
-        _weatherAPIOptions = weatherAPIOptions.Value;
-        _apiKey = _weatherAPIOptions.APIKey;
+        _environmentOptions = environmentOptions.Value;
+        _apiKey = _environmentOptions.WeatherAPIApiKey;
         _client = client;
 
         if (string.IsNullOrEmpty(_apiKey) == true)

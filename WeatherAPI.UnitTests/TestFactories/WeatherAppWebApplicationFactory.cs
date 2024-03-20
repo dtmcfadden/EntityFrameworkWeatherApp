@@ -4,18 +4,19 @@ using WeatherAPI.UnitTests.MockData.Services;
 namespace WeatherAPI.UnitTests.TestFactories;
 public class WeatherAppWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
 {
-    public IOptions<OpenWeatherOptions> OpenWeatherOptions { get; private set; }
-    public IOptions<WeatherAPIOptions> WeatherAPIOptions { get; private set; }
+    public IOptions<EnvironmentOptions> EnvironmentOptions { get; private set; }
 
     public Mock<IOpenWeatherHTTPService> OpenWeatherHTTPServiceMock { get; private set; }
     public Mock<IWeatherAPIHTTPService> WeatherAPIHTTPServiceMock { get; private set; }
 
     public WeatherAppWebApplicationFactory()
     {
-        OpenWeatherOptions =
-            new OptionsWrapper<OpenWeatherOptions>(new() { APIKey = "key" });
-        WeatherAPIOptions =
-            new OptionsWrapper<WeatherAPIOptions>(new() { APIKey = "key" });
+        EnvironmentOptions =
+            new OptionsWrapper<EnvironmentOptions>(new()
+            {
+                OpenWeatherApiKey = "Key",
+                WeatherAPIApiKey = "Key"
+            });
 
         OpenWeatherHTTPServiceMock =
             WeatherAppWebApplicationFactory<TProgram>.SetupOpenWeatherHTTPServiceMock();
