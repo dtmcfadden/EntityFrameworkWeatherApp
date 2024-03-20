@@ -1,6 +1,7 @@
 
 using Asp.Versioning.ApiExplorer;
 using EntityFrameworkWeatherApp;
+using EntityFrameworkWeatherApp.Abstractions.Common;
 using EntityFrameworkWeatherApp.Components;
 using EntityFrameworkWeatherApp.Controllers.API;
 using EntityFrameworkWeatherApp.OpenAPI;
@@ -47,26 +48,29 @@ public class Program
         app.MapWeatherAPIEndpoints();
 
         // Configure the HTTP request pipeline.
+        EnvironmentMethods.IsDevelopment = app.Environment.IsDevelopment();
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Home/Error");
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
-
-        app.UseSwagger();
-        app.UseSwaggerUI(options =>
+        else
         {
-            IReadOnlyList<ApiVersionDescription> descriptions = app.DescribeApiVersions();
-
-            foreach (ApiVersionDescription desc in descriptions.Reverse())
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
             {
-                string url = $"/swagger/{desc.GroupName}/swagger.json";
-                string name = $"{desc.GroupName.ToUpperInvariant()} {app.Environment.EnvironmentName}{(desc.IsDeprecated == true ? " Deprecated" : "")}";
+                IReadOnlyList<ApiVersionDescription> descriptions = app.DescribeApiVersions();
 
-                options.SwaggerEndpoint(url, name);
-            }
-        });
+                foreach (ApiVersionDescription desc in descriptions.Reverse())
+                {
+                    string url = $"/swagger/{desc.GroupName}/swagger.json";
+                    string name = $"{desc.GroupName.ToUpperInvariant()} {app.Environment.EnvironmentName}{(desc.IsDeprecated == true ? " Deprecated" : "")}";
+
+                    options.SwaggerEndpoint(url, name);
+                }
+            });
+        }
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
