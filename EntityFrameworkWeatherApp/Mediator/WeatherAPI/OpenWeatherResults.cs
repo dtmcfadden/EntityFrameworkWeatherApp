@@ -6,7 +6,7 @@ namespace EntityFrameworkWeatherApp.Mediator.WeatherAPI;
 
 public static class OpenWeatherResults
 {
-    public static async Task<Result<List<OpenWeatherGeoDirectModel>?>?> GetOpenWeatherGeoDirectResult(string location, ISender sender)
+    public static async Task<Result<List<OpenWeatherGeoDirectModel>?>> GetOpenWeatherGeoDirectResult(string location, ISender sender)
     {
         var query = new GetOpenWeatherGeoDirectQuery(location);
 
@@ -14,7 +14,7 @@ public static class OpenWeatherResults
         return result;
     }
 
-    public static async Task<Result<OpenWeatherGeoZipModel?>> GetOpenWeatherGeoZipResult(string zip, ISender sender)
+    public static async Task<Result<OpenWeatherGeoZipModel>> GetOpenWeatherGeoZipResult(string zip, ISender sender)
     {
         var query = new GetOpenWeatherGeoZipQuery(zip);
 
@@ -22,7 +22,7 @@ public static class OpenWeatherResults
         return result;
     }
 
-    public static async Task<Result<OpenWeatherDataModel?>> GetOpenWeatherDirectLatLongResult(float latitude, float longitude, ISender sender)
+    public static async Task<Result<OpenWeatherDataModel>> GetOpenWeatherDirectLatLongResult(float latitude, float longitude, ISender sender)
     {
         var query = new GetOpenWeatherWeatherByLatLongQuery(latitude, longitude);
 
@@ -30,7 +30,7 @@ public static class OpenWeatherResults
         return result;
     }
 
-    public static async Task<Result<OpenWeatherDataModel?>> GetOpenWeatherDirectLocationResult(string location, ISender sender)
+    public static async Task<Result<OpenWeatherDataModel>> GetOpenWeatherDirectLocationResult(string location, ISender sender)
     {
         var query = new GetOpenWeatherWeatherByLocationNameQuery(location);
 

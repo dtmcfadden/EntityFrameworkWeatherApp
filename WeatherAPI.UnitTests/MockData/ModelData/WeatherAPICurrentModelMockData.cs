@@ -3,12 +3,12 @@
 namespace WeatherAPI.UnitTests.MockData.ModelData;
 internal static class WeatherAPICurrentModelMockData
 {
-    public static WeatherAPICurrentModel? GetWeatherAPICurrentModel(string name)
+    public static WeatherAPICurrentModel GetWeatherAPICurrentModel(string name)
     {
         return WeatherAPICurrentModelList[name];
     }
 
-    private static readonly Dictionary<string, WeatherAPICurrentModel?> WeatherAPICurrentModelList = new()
+    private static readonly Dictionary<string, WeatherAPICurrentModel> WeatherAPICurrentModelList = new()
     {
         { "London",
             new () {

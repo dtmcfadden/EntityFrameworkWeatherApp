@@ -10,9 +10,9 @@ public class Result<TValue>
     public bool IsSuccess { get; }
     public bool IsFailure => !IsSuccess;
 
-    public Exception GetException { get; private set; }
-    public Error GetError { get; private set; }
-    public ValidationResult GetValidationResult { get; private set; }
+    public Exception? GetException { get; private set; }
+    public Error? GetError { get; private set; }
+    public ValidationResult? GetValidationResult { get; private set; }
 
     public Dictionary<string, List<ProblemDetails>>? Exception = null;
 

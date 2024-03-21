@@ -19,7 +19,7 @@ internal sealed class CacheService(IMemoryCache memoryCache) : ICacheService
         long? size = null,
         CancellationToken cancellationToken = default)
     {
-        T? result = await _memoryCache.GetOrCreateAsync(CacheKey, entry =>
+        return await _memoryCache.GetOrCreateAsync(CacheKey, entry =>
         {
             entry.SetAbsoluteExpiration(expiration ?? DefaultExpiration);
             entry.SetSlidingExpiration(slidingExpiration ?? DefaultSlidingExpiration);
@@ -27,6 +27,5 @@ internal sealed class CacheService(IMemoryCache memoryCache) : ICacheService
 
             return factory(cancellationToken);
         });
-        return result;
     }
 }
