@@ -31,7 +31,7 @@ public class ResultTests
     public void Given_ResultWithException_HasResult()
     {
         // Arrange
-        Exception exception = new Exception("Test Exception");
+        Exception exception = new("Test Exception");
 
         // Act
         var result = new Result<TestModel>(exception);
@@ -46,8 +46,8 @@ public class ResultTests
     public void Given_ResultWithValidationFailure_HasResult()
     {
         // Arrange
-        TestModel testModel = new TestModel();
-        TestModelValidator validator = new TestModelValidator();
+        TestModel testModel = new();
+        TestModelValidator validator = new();
 
         ValidationResult validationResult = validator.Validate(testModel);
 
@@ -64,10 +64,10 @@ public class ResultTests
     public void Given_ResultWithExceptionValidationFailure_HasResult()
     {
         // Arrange
-        Exception exception = new Exception("Test Exception");
+        Exception exception = new("Test Exception");
 
-        TestModel testModel = new TestModel();
-        TestModelValidator validator = new TestModelValidator();
+        TestModel testModel = new();
+        TestModelValidator validator = new();
 
         ValidationResult validationResult = validator.Validate(testModel);
 

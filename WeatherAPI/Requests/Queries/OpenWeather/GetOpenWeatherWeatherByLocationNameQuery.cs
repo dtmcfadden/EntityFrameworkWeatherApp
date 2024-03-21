@@ -66,7 +66,7 @@ public class GetOpenWeatherWeatherByLocationNameHandler(
 
     private async Task<(LatLongEntity LatLong, Error? Error)> GetOpenWeatherGeoDirectLatLong(string locationName, CancellationToken cancellationToken, ISender sender)
     {
-        var geoDirectResult = await sender.Send(new GetOpenWeatherGeoDirectQuery(locationName));
+        var geoDirectResult = await sender.Send(new GetOpenWeatherGeoDirectQuery(locationName), cancellationToken);
         var latLong = new LatLongEntity();
 
         if (geoDirectResult != null && geoDirectResult.IsSuccess && geoDirectResult?.Value?.Count > 0)
@@ -82,7 +82,7 @@ public class GetOpenWeatherWeatherByLocationNameHandler(
 
     private async Task<(LatLongEntity LatLong, Error? Error)> GetOpenWeatherGeoZipLatLong(string locationName, CancellationToken cancellationToken, ISender sender)
     {
-        var geoZipResult = await sender.Send(new GetOpenWeatherGeoZipQuery(locationName));
+        var geoZipResult = await sender.Send(new GetOpenWeatherGeoZipQuery(locationName), cancellationToken);
         var latLong = new LatLongEntity();
 
         if (geoZipResult.IsSuccess)

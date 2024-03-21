@@ -13,14 +13,12 @@ public class GetOpenWeatherGeoDirectQueryTests : IClassFixture<WeatherAppWebAppl
         _output = outputHelper;
         _factory = factory;
 
-        using (var scope = _factory.Services.CreateScope())
-        {
-            _client.BaseAddress = _factory.OpenWeatherClientOptions.BaseAddress;
+        using var scope = _factory.Services.CreateScope();
+        _client.BaseAddress = _factory.OpenWeatherClientOptions.BaseAddress;
 
-            _environmentOptions = scope.ServiceProvider.GetRequiredService<IOptions<EnvironmentOptions>>();
-            _openWeatherHTTPService = new OpenWeatherHTTPService(_environmentOptions, _client);
-            _getOpenWeatherGeoDirectHandler = new GetOpenWeatherGeoDirectHandler(_openWeatherHTTPService);
-        }
+        _environmentOptions = scope.ServiceProvider.GetRequiredService<IOptions<EnvironmentOptions>>();
+        _openWeatherHTTPService = new OpenWeatherHTTPService(_environmentOptions, _client);
+        _getOpenWeatherGeoDirectHandler = new GetOpenWeatherGeoDirectHandler(_openWeatherHTTPService);
     }
 
     [Theory]
