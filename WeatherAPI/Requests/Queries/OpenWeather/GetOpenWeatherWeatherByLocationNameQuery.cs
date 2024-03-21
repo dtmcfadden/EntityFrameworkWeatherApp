@@ -6,7 +6,7 @@ using WeatherAPI.Models.OpenWeather;
 
 namespace WeatherAPI.Requests.Queries.OpenWeather;
 public record GetOpenWeatherWeatherByLocationNameQuery(string LocationName) :
-    ICachedQuery<Result<OpenWeatherDataModel?>>
+    ICachedQuery<Result<OpenWeatherDataModel>>
 {
     public string CacheKey => $"openweather-direct-location-{LocationName}";
 
@@ -19,18 +19,18 @@ public class GetOpenWeatherWeatherByLocationNameHandler(
     ISender sender,
     IOpenWeatherHTTPService openWeatherHTTPService,
     LocationStringMatches locationStringMatches) :
-    IRequestHandler<GetOpenWeatherWeatherByLocationNameQuery, Result<OpenWeatherDataModel?>>
+    IRequestHandler<GetOpenWeatherWeatherByLocationNameQuery, Result<OpenWeatherDataModel>>
 {
     private readonly IOpenWeatherHTTPService _openWeatherHTTPService = openWeatherHTTPService;
     private readonly LocationStringMatches _locationStringMatches = locationStringMatches;
     private readonly ISender _sender = sender;
 
-    public async Task<Result<OpenWeatherDataModel?>> Handle(
+    public async Task<Result<OpenWeatherDataModel>> Handle(
         GetOpenWeatherWeatherByLocationNameQuery request,
         CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(request.LocationName))
-            return new Result<OpenWeatherDataModel?>(OpenWeatherErrors.LocationIsEmpty());
+            return new Result<OpenWeatherDataModel>(OpenWeatherErrors.LocationIsEmpty());
 
         var locationType = _locationStringMatches.GetLocationTypeFromString(request.LocationName);
         var returnLatLong = new LatLongEntity();
@@ -57,8 +57,8 @@ public class GetOpenWeatherWeatherByLocationNameHandler(
         if (geoData.LatLong.IsEmpty())
         {
             if (returnError != null)
-                return new Result<OpenWeatherDataModel?>(returnError);
-            return new Result<OpenWeatherDataModel?>(OpenWeatherErrors.LatLongIsEmpty());
+                return new Result<OpenWeatherDataModel>(returnError);
+            return new Result<OpenWeatherDataModel>(OpenWeatherErrors.LatLongIsEmpty());
         }
 
         return await _openWeatherHTTPService.GetWeatherByLatLong(geoData.LatLong, cancellationToken);

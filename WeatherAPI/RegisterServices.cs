@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using WeatherAPI.Abstractions.Behaviors;
 using WeatherAPI.Abstractions.Caching;
@@ -16,11 +15,11 @@ public static class RegisterServices
         PooledConnectionLifetime = TimeSpan.FromMinutes(5),
     };
 
-    public static IServiceCollection AddAppWeatherAPIServices(this IServiceCollection services, ConfigurationManager config)
+    public static IServiceCollection AddAppWeatherAPIServices(this IServiceCollection services)
     {
         services.AddSingleton<LocationStringMatches>();
 
-        services.AddConfigureOptions(config);
+        services.AddConfigureOptions();
 
         services.AddWeatherAPIValidators();
 
@@ -49,15 +48,22 @@ public static class RegisterServices
         return services;
     }
 
-    private static IServiceCollection AddConfigureOptions(this IServiceCollection services,
-        ConfigurationManager config)
+    private static IServiceCollection AddConfigureOptions(this IServiceCollection services)
     {
         var weatherAPIConfiguration = ConfigurationSettings.GetConfigurationSettings();
 
         services.Configure<EnvironmentOptions>(options =>
         {
-            options.OpenWeatherApiKey = weatherAPIConfiguration.GetSection("openweather-apikey").Value;
-            options.WeatherAPIApiKey = weatherAPIConfiguration.GetSection("weatherapi-apikey").Value;
+            if (weatherAPIConfiguration != null)
+            {
+                var owSection = weatherAPIConfiguration.GetSection("openweather-apikey");
+                if (owSection.Value != null)
+                    options.OpenWeatherApiKey = owSection.Value;
+
+                var waSection = weatherAPIConfiguration.GetSection("weatherapi-apikey");
+                if (waSection.Value != null)
+                    options.WeatherAPIApiKey = waSection.Value;
+            }
         });
 
         return services;

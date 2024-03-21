@@ -3,7 +3,7 @@ using WeatherAPI.Abstractions.Caching;
 
 namespace WeatherAPI.Abstractions.Behaviors;
 internal sealed class QueryCachingPipelineBehavior<TRequest, TResponse>(ICacheService cacheService)
-    : IPipelineBehavior<TRequest, TResponse> where TRequest : ICachedQuery
+    : IPipelineBehavior<TRequest, TResponse?> where TRequest : ICachedQuery
 {
     private readonly ICacheService _cacheService = cacheService;
 

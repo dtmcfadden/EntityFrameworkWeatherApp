@@ -3,12 +3,12 @@
 namespace WeatherAPI.UnitTests.MockData.ModelData;
 internal static class OpenWeatherDataModelMockData
 {
-    public static OpenWeatherDataModel? GetOpenWeatherDataModel(string name)
+    public static OpenWeatherDataModel GetOpenWeatherDataModel(string name)
     {
         return OpenWeatherDataModelList[name];
     }
 
-    private static readonly Dictionary<string, OpenWeatherDataModel?> OpenWeatherDataModelList = new()
+    private static readonly Dictionary<string, OpenWeatherDataModel> OpenWeatherDataModelList = new()
     {
         { "London",
             new () {
@@ -47,12 +47,12 @@ internal static class OpenWeatherDataModelMockData
         }
     };
 
-    public static OpenWeatherGeoZipModel? GetOpenWeatherGeoZipModel(string name)
+    public static OpenWeatherGeoZipModel GetOpenWeatherGeoZipModel(string name)
     {
         return OpenWeatherGeoZipModelList[name];
     }
 
-    private static readonly Dictionary<string, OpenWeatherGeoZipModel?> OpenWeatherGeoZipModelList = new()
+    private static readonly Dictionary<string, OpenWeatherGeoZipModel> OpenWeatherGeoZipModelList = new()
     {
         { "55407",
             new () {

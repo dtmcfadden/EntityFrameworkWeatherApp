@@ -30,57 +30,57 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
             _isImplemented = OpenWeatherErrors.APIKeyIsMissing();
     }
 
-    public async Task<Result<OpenWeatherDataModel?>> GetWeatherByLatLong(LatLongEntity latLong,
+    public async Task<Result<OpenWeatherDataModel>> GetWeatherByLatLong(LatLongEntity latLong,
         CancellationToken cancellationToken = default)
     {
         if (_isImplemented != null)
-            return new Result<OpenWeatherDataModel?>(_isImplemented);
+            return new Result<OpenWeatherDataModel>(_isImplemented);
 
         if (latLong.IsEmpty())
-            return new Result<OpenWeatherDataModel?>(OpenWeatherErrors.LatOrLongIsNull(latLong.ToString()));
+            return new Result<OpenWeatherDataModel>(OpenWeatherErrors.LatOrLongIsNull(latLong.ToString()));
 
         var url = $"{_dataWeatherVer}lat={latLong.Latitude}&lon={latLong.Longitude}&appid={_apiKey}";
-        var response = await GetResultFromOpenWeather<OpenWeatherDataModel?>(url, cancellationToken);
+        var response = await GetResultFromOpenWeather<OpenWeatherDataModel>(url, cancellationToken);
 
         return response;
     }
 
-    public async Task<Result<List<OpenWeatherGeoDirectModel?>?>?> GetGeoDirect(string LocationQuery,
+    public async Task<Result<List<OpenWeatherGeoDirectModel>>> GetGeoDirect(string LocationQuery,
         CancellationToken cancellationToken = default)
     {
         if (_isImplemented != null)
-            return new Result<List<OpenWeatherGeoDirectModel?>?>(_isImplemented);
+            return new Result<List<OpenWeatherGeoDirectModel>>(_isImplemented);
 
         var url = $"{_geoDirectVer}q={LocationQuery}&limit=1&appid={_apiKey}";
-        var response = await GetResultFromOpenWeather<List<OpenWeatherGeoDirectModel?>?>(url, cancellationToken);
+        var response = await GetResultFromOpenWeather<List<OpenWeatherGeoDirectModel>>(url, cancellationToken);
 
-        if (response.IsFailure || response?.Value?.Count == 0)
-            return new Result<List<OpenWeatherGeoDirectModel?>?>(OpenWeatherErrors.GeoDirectNotValidLocation(LocationQuery));
+        if (response.IsFailure || response.Value?.Count == 0)
+            return new Result<List<OpenWeatherGeoDirectModel>>(OpenWeatherErrors.GeoDirectNotValidLocation(LocationQuery));
 
         return response;
     }
 
-    public async Task<Result<OpenWeatherGeoZipModel?>> GetGeoZip(string ZipQuery,
+    public async Task<Result<OpenWeatherGeoZipModel>> GetGeoZip(string ZipQuery,
         CancellationToken cancellationToken = default)
     {
         if (_isImplemented != null)
-            return new Result<OpenWeatherGeoZipModel?>(_isImplemented);
+            return new Result<OpenWeatherGeoZipModel>(_isImplemented);
 
         var url = $"{_geoZipVer}zip={ZipQuery}&appid={_apiKey}";
-        var response = await GetResultFromOpenWeather<OpenWeatherGeoZipModel?>(url, cancellationToken);
+        var response = await GetResultFromOpenWeather<OpenWeatherGeoZipModel>(url, cancellationToken);
 
         if (response == null)
-            return new Result<OpenWeatherGeoZipModel?>(OpenWeatherErrors.GeoZipNotValidZip(ZipQuery));
+            return new Result<OpenWeatherGeoZipModel>(OpenWeatherErrors.GeoZipNotValidZip(ZipQuery));
 
         return response;
     }
 
-    private async Task<Result<T?>> GetResultFromOpenWeather<T>(string url, CancellationToken cancellationToken = default)
+    private async Task<Result<T>> GetResultFromOpenWeather<T>(string url, CancellationToken cancellationToken = default)
     {
         HttpResponseMessage response;
 
         if (_isImplemented != null)
-            return new Result<T?>(_isImplemented);
+            return new Result<T>(_isImplemented);
 
         try
         {
@@ -88,21 +88,22 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
         }
         catch (Exception ex)
         {
-            return new Result<T?>(OpenWeatherErrors.ErrorContactingOpenWeather(ex.Message));
+            return new Result<T>(OpenWeatherErrors.ErrorContactingOpenWeather(ex.Message));
         }
 
-        T? content;
         if (response.IsSuccessStatusCode)
         {
-            content = await response.Content.ReadFromJsonAsync<T>(cancellationToken);
+            var jsonResponse = await response.Content.ReadFromJsonAsync<T>(cancellationToken);
+            if (jsonResponse == null)
+                return new Result<T>(OpenWeatherErrors.ErrorResponseFromOpenWeather("Response is null."));
+
+            return jsonResponse;
         }
         else
         {
             var error = await response.Content.ReadFromJsonAsync<OpenWeatherErrorModel>(cancellationToken);
 
-            return new Result<T?>(OpenWeatherErrors.ErrorResponseFromOpenWeather(string.Format("{0}:{1}", error?.Code, error?.Message)));
+            return new Result<T>(OpenWeatherErrors.ErrorResponseFromOpenWeather(string.Format("{0}:{1}", error?.Code, error?.Message)));
         }
-
-        return content;
     }
 }

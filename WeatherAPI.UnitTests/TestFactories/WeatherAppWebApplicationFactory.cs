@@ -32,8 +32,7 @@ public class WeatherAppWebApplicationFactory<TProgram> : WebApplicationFactory<T
             It.IsAny<CancellationToken>()))
             .ReturnsAsync(OpenWeatherHTTPServiceMockData.GetWeatherByLatLong("SuccessLondon"));
 
-        mock.Setup(s => s.GetGeoDirect("London",
-            It.IsAny<CancellationToken>()))
+        mock.Setup(s => s.GetGeoDirect("London", It.IsAny<CancellationToken>()))
             .ReturnsAsync(OpenWeatherHTTPServiceMockData.GetGeoDirect("SuccessLondon"));
 
         mock.Setup(s => s.GetGeoZip("55407",

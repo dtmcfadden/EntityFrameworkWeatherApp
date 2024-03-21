@@ -38,7 +38,7 @@ public class Program
         builder.Services.AddSingleton(configuration);
 
         builder.Services.AddAppServices();
-        builder.Services.AddAppWeatherAPIServices(builder.Configuration);
+        builder.Services.AddAppWeatherAPIServices();
 
         var app = builder.Build();
 
