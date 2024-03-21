@@ -41,7 +41,7 @@
         owLatLongError?.Clear();
     }
 
-    private LatLongViewModel? owLatLongViewModel = new();
+    private LatLongViewModel owLatLongViewModel = new();
     private Dictionary<string, List<ProblemDetails>>? owLatLongError { get; set; } = [];
 
     private async Task OpenWeatherLatLongSubmit()

@@ -4,7 +4,7 @@ namespace WeatherAPI.DevTests.TestFactories;
 public class WeatherAppWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
 {
     // TODO: Get Sender working properly for testing
-    public Mock<ISender> Sender;
+    public required Mock<ISender> Sender;
 
     public WebApplicationFactoryClientOptions OpenWeatherClientOptions = new()
     {
@@ -47,8 +47,16 @@ public class WeatherAppWebApplicationFactory<TProgram> : WebApplicationFactory<T
 
             services.Configure<EnvironmentOptions>(options =>
             {
-                options.OpenWeatherApiKey = weatherAPITestsConfiguration.GetSection("openweather-apikey").Value;
-                options.WeatherAPIApiKey = weatherAPITestsConfiguration.GetSection("weatherapi-apikey").Value;
+                if (weatherAPITestsConfiguration != null)
+                {
+                    var owSection = weatherAPITestsConfiguration.GetSection("openweather-apikey");
+                    if (owSection.Value != null)
+                        options.OpenWeatherApiKey = owSection.Value;
+
+                    var waSection = weatherAPITestsConfiguration.GetSection("weatherapi-apikey");
+                    if (waSection.Value != null)
+                        options.WeatherAPIApiKey = waSection.Value;
+                }
             });
 
             services.AddHttpClient<GetOpenWeatherGeoDirectQueryTests>(httpClient =>

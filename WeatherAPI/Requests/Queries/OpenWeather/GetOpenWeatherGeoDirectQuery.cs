@@ -5,7 +5,7 @@ using WeatherAPI.Models.OpenWeather;
 namespace WeatherAPI.Requests.Queries.OpenWeather;
 
 public sealed record GetOpenWeatherGeoDirectQuery(string LocationQuery) :
-    ICachedQuery<Result<List<OpenWeatherGeoDirectModel>?>>
+    ICachedQuery<Result<List<OpenWeatherGeoDirectModel>>>
 {
     public string CacheKey => $"openweather-geo-loc-{LocationQuery}";
 
@@ -15,16 +15,16 @@ public sealed record GetOpenWeatherGeoDirectQuery(string LocationQuery) :
 }
 
 public sealed class GetOpenWeatherGeoDirectHandler(IOpenWeatherHTTPService openWeatherHTTPService) :
-    IRequestHandler<GetOpenWeatherGeoDirectQuery, Result<List<OpenWeatherGeoDirectModel>?>>
+    IRequestHandler<GetOpenWeatherGeoDirectQuery, Result<List<OpenWeatherGeoDirectModel>>>
 {
     private readonly IOpenWeatherHTTPService _openWeatherHTTPService = openWeatherHTTPService;
 
-    public async Task<Result<List<OpenWeatherGeoDirectModel>?>> Handle(
+    public async Task<Result<List<OpenWeatherGeoDirectModel>>> Handle(
         GetOpenWeatherGeoDirectQuery request,
         CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(request.LocationQuery))
-            return new Result<List<OpenWeatherGeoDirectModel>?>(OpenWeatherErrors.LocationIsEmpty(request.LocationQuery));
+            return new Result<List<OpenWeatherGeoDirectModel>>(OpenWeatherErrors.LocationIsEmpty(request.LocationQuery));
 
         return await _openWeatherHTTPService.GetGeoDirect(request.LocationQuery, cancellationToken);
     }

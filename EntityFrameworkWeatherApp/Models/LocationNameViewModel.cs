@@ -6,5 +6,5 @@ public class LocationNameViewModel
 {
     [Required]
     [StringLength(50)]
-    public string Location { get; set; }
+    public string Location { get; set; } = "";
 }

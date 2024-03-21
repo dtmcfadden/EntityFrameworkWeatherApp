@@ -89,9 +89,12 @@
     private void HandleReturnData<T>(T? data)
     {
         ClearForms();
-        weatherJsonData = data;
-        Parameters = new() { { "Model", data } };
-        componentType = GetComponentTypeByDataModel(data.GetType());
+        if(data != null)
+        {
+            weatherJsonData = data;
+            Parameters = new() { { "Model", data } };
+            componentType = GetComponentTypeByDataModel(data.GetType());
+        }
     }
 
     private void ClearForms()
