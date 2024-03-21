@@ -84,8 +84,16 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
             services.Configure<EnvironmentOptions>(options =>
             {
-                options.OpenWeatherApiKey = weatherAPITestsConfiguration.GetSection("openweather-apikey").Value;
-                options.WeatherAPIApiKey = weatherAPITestsConfiguration.GetSection("weatherapi-apikey").Value;
+                if (weatherAPITestsConfiguration != null)
+                {
+                    var owSection = weatherAPITestsConfiguration.GetSection("openweather-apikey");
+                    if (owSection.Value != null)
+                        options.OpenWeatherApiKey = owSection.Value;
+
+                    var waSection = weatherAPITestsConfiguration.GetSection("weatherapi-apikey");
+                    if (waSection.Value != null)
+                        options.WeatherAPIApiKey = waSection.Value;
+                }
             });
         });
 

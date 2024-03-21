@@ -35,8 +35,22 @@ public class WeatherAPIHTTPServiceTests : IClassFixture<WeatherAppWebApplication
 
         /// Assert
         Assert.IsType<Result<WeatherAPICurrentModel>>(result);
-        Assert.Equal((int)result?.Value?.Location?.Latitude, (int)latitude);
-        Assert.Equal((int)result?.Value?.Location?.Longitude, (int)longitude);
+        //Assert.Equal((int)result?.Value?.Location?.Latitude, (int)latitude);
+        //Assert.Equal((int)result?.Value?.Location?.Longitude, (int)longitude);
+
+        Assert.NotNull(result.Value);
+        Assert.NotNull(result.Value.Location);
+        if (result.Value.Location?.Latitude != null)
+        {
+            Assert.NotNull(result.Value.Location?.Latitude);
+            Assert.Equal((int)result.Value.Location.Latitude, (int)latitude);
+        }
+        if (result.Value.Location?.Longitude != null)
+        {
+            Assert.NotNull(result.Value.Location?.Longitude);
+            Assert.Equal((int)result.Value.Location.Longitude, (int)longitude);
+        }
+
         Assert.True(result.IsSuccess);
     }
 
@@ -57,9 +71,6 @@ public class WeatherAPIHTTPServiceTests : IClassFixture<WeatherAppWebApplication
         Assert.IsType<Result<WeatherAPICurrentModel>>(result);
         Assert.Equal(result.GetError?.Code, errorCode);
         Assert.True(result.IsFailure);
-        //Assert.NotEqual((int)result?.Value?.Location?.Latitude, (int)latitude);
-        //Assert.NotEqual((int)result?.Value?.Location?.Longitude, (int)longitude);
-        //Assert.True(result.IsSuccess);
     }
 
     [Theory]

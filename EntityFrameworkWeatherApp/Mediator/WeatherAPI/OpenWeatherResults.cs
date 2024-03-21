@@ -6,7 +6,7 @@ namespace EntityFrameworkWeatherApp.Mediator.WeatherAPI;
 
 public static class OpenWeatherResults
 {
-    public static async Task<Result<List<OpenWeatherGeoDirectModel>?>> GetOpenWeatherGeoDirectResult(string location, ISender sender)
+    public static async Task<Result<List<OpenWeatherGeoDirectModel>>> GetOpenWeatherGeoDirectResult(string location, ISender sender)
     {
         var query = new GetOpenWeatherGeoDirectQuery(location);
 

@@ -34,7 +34,7 @@
         owLocationError?.Clear();
     }
 
-    private LocationNameViewModel? owLocationNameViewModel = new();
+    private LocationNameViewModel owLocationNameViewModel = new();
     private Dictionary<string, List<ProblemDetails>>? owLocationError { get; set; } = [];
 
     private async Task OpenWeatherLocationSubmit()
