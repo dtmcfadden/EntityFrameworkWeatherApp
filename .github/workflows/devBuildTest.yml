@@ -10,7 +10,7 @@ env:
   CONTAINER_REGISTRY_NAME: registry20240318161934
   CONTAINER_REGISTRY_LOGIN_SERVER: registry20240318161934.azurecr.io
 jobs:
-  Build:
+  build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout source code
