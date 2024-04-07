@@ -1,7 +1,5 @@
-﻿global using EntityFrameworkWeatherApp.Abstractions.Results;
-global using MediatR;
+﻿global using EntityFrameworkWeatherApp.Infrastructure.Results;
 global using Microsoft.Extensions.Configuration;
-global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Options;
 global using Moq;
 global using System.Text.Json;

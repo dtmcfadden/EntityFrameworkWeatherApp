@@ -23,6 +23,7 @@ public sealed class WeatherAPIHTTPService : IWeatherAPIHTTPService
             _isImplemented = WeatherAPIErrors.APIKeyIsMissing();
     }
 
+    [Time]
     public async Task<Result<WeatherAPICurrentModel>> GetWeatherByLatLong(LatLongEntity latLong,
         CancellationToken cancellationToken = default)
     {
@@ -48,6 +49,7 @@ public sealed class WeatherAPIHTTPService : IWeatherAPIHTTPService
         return response;
     }
 
+    [Time]
     public async Task<Result<WeatherAPICurrentModel>> GetWeatherByLocationName(LocationEntity locationName,
         CancellationToken cancellationToken = default)
     {
@@ -60,6 +62,7 @@ public sealed class WeatherAPIHTTPService : IWeatherAPIHTTPService
         return response;
     }
 
+    [Time]
     private async Task<Result<T>> GetResultFromWeatherAPI<T>(string url, CancellationToken cancellationToken = default)
     {
         // https://app.swaggerhub.com/apis-docs/WeatherAPI.com/WeatherAPI/1.0.2#/APIs/realtime-weather

@@ -30,6 +30,7 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
             _isImplemented = OpenWeatherErrors.APIKeyIsMissing();
     }
 
+    [Time]
     public async Task<Result<OpenWeatherDataModel>> GetWeatherByLatLong(LatLongEntity latLong,
         CancellationToken cancellationToken = default)
     {
@@ -45,6 +46,7 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
         return response;
     }
 
+    [Time]
     public async Task<Result<List<OpenWeatherGeoDirectModel>>> GetGeoDirect(string LocationQuery,
         CancellationToken cancellationToken = default)
     {
@@ -60,6 +62,7 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
         return response;
     }
 
+    [Time]
     public async Task<Result<OpenWeatherGeoZipModel>> GetGeoZip(string ZipQuery,
         CancellationToken cancellationToken = default)
     {
@@ -75,6 +78,7 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
         return response;
     }
 
+    [Time]
     private async Task<Result<T>> GetResultFromOpenWeather<T>(string url, CancellationToken cancellationToken = default)
     {
         HttpResponseMessage response;

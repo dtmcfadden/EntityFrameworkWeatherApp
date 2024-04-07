@@ -3,16 +3,19 @@ using WeatherAPI.Entities.Errors;
 using WeatherAPI.Models.WeatherAPI;
 
 namespace WeatherAPI.Requests.Queries.WeatherAPI;
+
+[Time]
 public record GetWeatherAPIWeatherByLocationNameQuery(string LocationName) :
     ICachedQuery<Result<WeatherAPICurrentModel>>
 {
     public string CacheKey => $"weatherapi-weather-location-{LocationName}";
 
-    public TimeSpan? Expiration => TimeSpan.FromMinutes(10);
-    public TimeSpan? SlidingExpiration => TimeSpan.FromMinutes(1);
+    public TimeSpan? Expiration => TimeSpan.FromMinutes(15);
+    public TimeSpan? SlidingExpiration => TimeSpan.FromMinutes(5);
     public long? Size => 1;
 }
 
+[Time]
 public class GetWeatherAPIWeatherByLocationNameHandler(IWeatherAPIHTTPService weatherAPIHTTPService) :
     IRequestHandler<GetWeatherAPIWeatherByLocationNameQuery, Result<WeatherAPICurrentModel>>
 {

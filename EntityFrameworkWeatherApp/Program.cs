@@ -1,9 +1,10 @@
 
 using Asp.Versioning.ApiExplorer;
 using EntityFrameworkWeatherApp;
-using EntityFrameworkWeatherApp.Abstractions.Common;
 using EntityFrameworkWeatherApp.Components;
 using EntityFrameworkWeatherApp.Controllers.API;
+using EntityFrameworkWeatherApp.Infrastructure;
+using EntityFrameworkWeatherApp.Infrastructure.Common;
 using EntityFrameworkWeatherApp.OpenAPI;
 using WeatherAPI;
 using ConfigurationSettings = EntityFrameworkWeatherApp.ConfigurationSettings;
@@ -34,10 +35,10 @@ public class Program
 
         builder.Services.AddSwaggerGen();
 
-        // Add services to the container.
         builder.Services.AddSingleton(configuration);
 
         builder.Services.AddAppServices();
+        builder.Services.AddInfrastructure();
         builder.Services.AddAppWeatherAPIServices();
 
         var app = builder.Build();
@@ -79,6 +80,8 @@ public class Program
 
         app.UseAuthorization();
         app.UseAntiforgery();
+
+        //app.UseMiddleware<WeatherRequestLoggingMiddleware>();
 
         app.MapControllerRoute(
             name: "default",

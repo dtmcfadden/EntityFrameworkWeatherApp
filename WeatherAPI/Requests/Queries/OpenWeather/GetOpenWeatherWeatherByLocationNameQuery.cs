@@ -1,20 +1,22 @@
-﻿
-using MediatR;
+﻿using MediatR;
 using WeatherAPI.Common;
 using WeatherAPI.Errors;
 using WeatherAPI.Models.OpenWeather;
 
 namespace WeatherAPI.Requests.Queries.OpenWeather;
+
+[Time]
 public record GetOpenWeatherWeatherByLocationNameQuery(string LocationName) :
     ICachedQuery<Result<OpenWeatherDataModel>>
 {
     public string CacheKey => $"openweather-direct-location-{LocationName}";
 
-    public TimeSpan? Expiration => TimeSpan.FromMinutes(10);
-    public TimeSpan? SlidingExpiration => TimeSpan.FromMinutes(1);
+    public TimeSpan? Expiration => TimeSpan.FromMinutes(15);
+    public TimeSpan? SlidingExpiration => TimeSpan.FromMinutes(5);
     public long? Size => 1;
 }
 
+[Time]
 public class GetOpenWeatherWeatherByLocationNameHandler(
     ISender sender,
     IOpenWeatherHTTPService openWeatherHTTPService,
@@ -64,9 +66,10 @@ public class GetOpenWeatherWeatherByLocationNameHandler(
         return await _openWeatherHTTPService.GetWeatherByLatLong(geoData.LatLong, cancellationToken);
     }
 
+    [Time]
     private async Task<(LatLongEntity LatLong, Error? Error)> GetOpenWeatherGeoDirectLatLong(string locationName, CancellationToken cancellationToken, ISender sender)
     {
-        var geoDirectResult = await sender.Send(new GetOpenWeatherGeoDirectQuery(locationName));
+        var geoDirectResult = await sender.Send(new GetOpenWeatherGeoDirectQuery(locationName), cancellationToken);
         var latLong = new LatLongEntity();
 
         if (geoDirectResult != null && geoDirectResult.IsSuccess && geoDirectResult?.Value?.Count > 0)
@@ -80,9 +83,10 @@ public class GetOpenWeatherWeatherByLocationNameHandler(
         return (latLong, geoDirectResult?.GetError);
     }
 
+    [Time]
     private async Task<(LatLongEntity LatLong, Error? Error)> GetOpenWeatherGeoZipLatLong(string locationName, CancellationToken cancellationToken, ISender sender)
     {
-        var geoZipResult = await sender.Send(new GetOpenWeatherGeoZipQuery(locationName));
+        var geoZipResult = await sender.Send(new GetOpenWeatherGeoZipQuery(locationName), cancellationToken);
         var latLong = new LatLongEntity();
 
         if (geoZipResult.IsSuccess)

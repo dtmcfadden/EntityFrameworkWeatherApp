@@ -1,6 +1,4 @@
-﻿
-
-namespace WeatherAPI.DevTests.Requests.Queries.WeatherAPI;
+﻿namespace WeatherAPI.DevTests.Requests.Queries.WeatherAPI;
 public class GetWeatherAPIWeatherByLatLongQueryTests :
     IClassFixture<WeatherAppWebApplicationFactory<Program>>, IDisposable
 {
@@ -37,7 +35,6 @@ public class GetWeatherAPIWeatherByLatLongQueryTests :
         // Act
         var result = await _getWeatherAPIWeatherByLatLongHandler.Handle(request, CancellationToken.None);
         _output.WriteLine(JsonSerializer.Serialize(result.Value));
-        _output.WriteLine(JsonSerializer.Serialize(result.GetError));
 
         /// Assert
         Assert.IsType<Result<WeatherAPICurrentModel?>>(result);

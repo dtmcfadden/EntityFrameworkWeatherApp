@@ -5,7 +5,9 @@
             if ((SkipNull == false) || (@ListItemTemplate is null && SkipNull == true))
             {
                 <li class="list-group-item d-flex justify-content-between align-items-start">
-                    @ListItemTemplate(item)
+                    @if(@ListItemTemplate is not null){
+                        @ListItemTemplate(item)
+                    }
                 </li>
             }
         }

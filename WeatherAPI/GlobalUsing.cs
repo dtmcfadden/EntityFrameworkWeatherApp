@@ -1,6 +1,8 @@
-﻿global using EntityFrameworkWeatherApp.Abstractions.Errors;
-global using EntityFrameworkWeatherApp.Abstractions.Results;
+﻿global using EntityFrameworkWeatherApp.Domain.Exceptions.CosmosDB;
+global using EntityFrameworkWeatherApp.Infrastructure.Errors;
+global using EntityFrameworkWeatherApp.Infrastructure.Results;
 global using FluentValidation;
+global using MethodTimer;
 global using System.Net.Http.Json;
 global using WeatherAPI.Abstractions;
 global using WeatherAPI.Entities;

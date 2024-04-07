@@ -3,16 +3,19 @@ using WeatherAPI.Entities.Errors;
 using WeatherAPI.Models.WeatherAPI;
 
 namespace WeatherAPI.Requests.Queries.WeatherAPI;
+
+[Time]
 public record GetWeatherAPIWeatherByLatLongQuery(float? Latitude, float? Longitude) :
     ICachedQuery<Result<WeatherAPICurrentModel>>
 {
     public string CacheKey => $"weatherapi-weather-latlon-{Latitude}{Longitude}";
 
-    public TimeSpan? Expiration => TimeSpan.FromMinutes(10);
-    public TimeSpan? SlidingExpiration => TimeSpan.FromMinutes(1);
+    public TimeSpan? Expiration => TimeSpan.FromMinutes(15);
+    public TimeSpan? SlidingExpiration => TimeSpan.FromMinutes(5);
     public long? Size => 1;
 }
 
+[Time]
 public class GetWeatherAPIWeatherByLatLongHandler(IWeatherAPIHTTPService weatherAPIHTTPService) :
     IRequestHandler<GetWeatherAPIWeatherByLatLongQuery, Result<WeatherAPICurrentModel>>
 {

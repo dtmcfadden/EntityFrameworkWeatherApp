@@ -1,4 +1,4 @@
-﻿global using EntityFrameworkWeatherApp.Abstractions.Results;
+﻿global using EntityFrameworkWeatherApp.Infrastructure.Results;
 global using MediatR;
 global using Microsoft.AspNetCore.Mvc.Testing;
 global using Microsoft.Extensions.Configuration;
