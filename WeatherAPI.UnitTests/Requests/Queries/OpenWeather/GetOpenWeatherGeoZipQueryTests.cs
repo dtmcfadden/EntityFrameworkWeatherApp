@@ -33,61 +33,6 @@ public class GetOpenWeatherGeoZipQueryTests : IClassFixture<WeatherAppWebApplica
         Assert.True(result.IsSuccess);
     }
 
-    //[Theory]
-    //[InlineData("E14,GB")]
-    //[InlineData("55407")]
-    //public async Task Given_GetOpenWeatherGeoZipHandler_GetsResultIsSuccess(string ZipQuery)
-    //{
-    //    // Arrange
-    //    var zipQuery = new GetOpenWeatherGeoZipQuery(ZipQuery);
-
-    //    // Act
-    //    var result = await _getOpenWeatherGeoZipHandler.Handle(zipQuery, CancellationToken.None);
-    //    _output.WriteLine(JsonSerializer.Serialize(result.Value));
-    //    _output.WriteLine(JsonSerializer.Serialize(result.GetError));
-
-    //    /// Assert
-    //    Assert.IsType<Result<OpenWeatherGeoZipModel?>>(result);
-    //    Assert.True(result.IsSuccess);
-    //}
-
-    //[Theory]
-    //[InlineData("E14,GB")]
-    //[InlineData("55407")]
-    //public async Task Given_GetOpenWeatherGeoZipHandler_GetsResultIsSuccess(string ZipQuery)
-    //{
-    //    // Arrange
-    //    var zipQuery = new GetOpenWeatherGeoZipQuery(ZipQuery);
-
-    //    // Act
-    //    var result = await _getOpenWeatherGeoZipHandler.Handle(zipQuery, CancellationToken.None);
-    //    _output.WriteLine(JsonSerializer.Serialize(result.Value));
-    //    _output.WriteLine(JsonSerializer.Serialize(result.GetError));
-
-    //    /// Assert
-    //    Assert.IsType<Result<OpenWeatherGeoZipModel?>>(result);
-    //    Assert.True(result.IsSuccess);
-    //}
-
-    //[Theory]
-    //[InlineData("", "OpenWeather.ZipIsEmpty", "")]
-    //[InlineData("vvee234vw", "OpenWeather.ErrorResponseFromOpenWeather", "404:not found")]
-    //public async Task Given_GetOpenWeatherGeoDirectHandler_GetsResultIsFailure(string ZipQuery, string errorCode, string logMessage)
-    //{
-    //    // Arrange
-    //    var zipQuery = new GetOpenWeatherGeoZipQuery(ZipQuery);
-
-    //    // Act
-    //    var result = await _getOpenWeatherGeoZipHandler.Handle(zipQuery, CancellationToken.None);
-    //    _output.WriteLine(JsonSerializer.Serialize(result.Value));
-    //    _output.WriteLine(JsonSerializer.Serialize(result.GetError));
-
-    //    /// Assert
-    //    Assert.Equal(result.GetError?.Code, errorCode);
-    //    Assert.Equal(result.GetError?.LogMessage, logMessage);
-    //    Assert.True(result.IsFailure);
-    //}
-
     public void Dispose()
     {
         //_factory.Dispose();

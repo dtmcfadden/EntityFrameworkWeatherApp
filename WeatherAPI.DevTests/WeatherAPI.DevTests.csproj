@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EntityFrameworkWeatherApp.Infrastructure\EntityFrameworkWeatherApp.Infrastructure.csproj" />
     <ProjectReference Include="..\EntityFrameworkWeatherApp\EntityFrameworkWeatherApp.csproj" />
     <ProjectReference Include="..\WeatherAPI\WeatherAPI.csproj" />
   </ItemGroup>

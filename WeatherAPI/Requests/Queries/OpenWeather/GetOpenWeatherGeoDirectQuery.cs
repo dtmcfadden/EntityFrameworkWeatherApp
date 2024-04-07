@@ -4,16 +4,18 @@ using WeatherAPI.Models.OpenWeather;
 
 namespace WeatherAPI.Requests.Queries.OpenWeather;
 
+[Time]
 public sealed record GetOpenWeatherGeoDirectQuery(string LocationQuery) :
     ICachedQuery<Result<List<OpenWeatherGeoDirectModel>>>
 {
     public string CacheKey => $"openweather-geo-loc-{LocationQuery}";
 
-    public TimeSpan? Expiration => TimeSpan.FromDays(10);
-    public TimeSpan? SlidingExpiration => TimeSpan.FromDays(1);
+    public TimeSpan? Expiration => TimeSpan.FromDays(15);
+    public TimeSpan? SlidingExpiration => TimeSpan.FromDays(5);
     public long? Size => 1;
 }
 
+[Time]
 public sealed class GetOpenWeatherGeoDirectHandler(IOpenWeatherHTTPService openWeatherHTTPService) :
     IRequestHandler<GetOpenWeatherGeoDirectQuery, Result<List<OpenWeatherGeoDirectModel>>>
 {
