@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Primitives;
-
-namespace EntityFrameworkWeatherApp.Domain.Entities.UserRequest;
+﻿namespace EntityFrameworkWeatherApp.Domain.Entities.UserRequest;
 
 // https://sd.blackball.lv/articles/read/19365-how-to-get-client-ip-address-and-location-information-in-aspnet-core
 // https://www.c-sharpcorner.com/article/get-ip-address-in-Asp-Net/
@@ -14,12 +12,6 @@ public record UserRequestEntity<TIdType> : BaseEntity<TIdType>
     public string? Method { get; set; }
 
     public string? Path { get; set; }
-
-    public string? UserAgent { get; set; }
-
-    public string? AcceptLanguage { get; set; }
-
-    public string? Referer { get; set; }
 
     public string? BlazorComponent { get; set; }
 
@@ -43,7 +35,6 @@ public record UserRequestEntity<TIdType> : BaseEntity<TIdType>
         {
             var con = httpTracking.Context.Connection;
             var headers = req?.Headers;
-            // var user = httpContext.User;
 
             ConnectionID = con.Id;
             RemoteIpAddress = con.RemoteIpAddress.ToString();
@@ -55,15 +46,6 @@ public record UserRequestEntity<TIdType> : BaseEntity<TIdType>
 
             if (headers is not null)
             {
-                headers.TryGetValue("User-Agent", out StringValues userAgentValue);
-                UserAgent = userAgentValue;
-
-                headers.TryGetValue("Accept-Language", out StringValues acceptLanguageValue);
-                AcceptLanguage = acceptLanguageValue;
-
-                headers.TryGetValue("Referer", out StringValues refererValue);
-                Referer = refererValue;
-
                 TraceId = httpTracking.Context.TraceIdentifier;
 
                 foreach (var key in headers.Keys)
@@ -82,20 +64,22 @@ public record UserRequestEntity<TIdType> : BaseEntity<TIdType>
     private readonly HashSet<string> _headers = [
         "accept",
         "accept-encoding",
-        "accept-language",
         "cache-control",
+        "connection",
         "cookie",
         "dnt",
         "host",
         "origin",
         "pragma",
-        "referer",
-        "user-agent",
+        "upgrade",
         "sec-ch-ua",
         "sec-ch-ua-mobile",
         "sec-fetch-dest",
         "sec-fetch-mode",
         "sec-websocket-version",
-        "sec-websocket-extensions"
+        "sec-websocket-extensions",
+        "x-arr-ssl",
+        "x-envoy-expected-rq-timeout-ms",
+        "x-forwarded-proto"
     ];
 }
