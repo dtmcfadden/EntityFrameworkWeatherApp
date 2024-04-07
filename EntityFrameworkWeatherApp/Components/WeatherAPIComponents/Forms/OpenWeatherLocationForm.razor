@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Mvc
 @using global::WeatherAPI.Models.OpenWeather
 @inject ISender sender
+@inject IHttpContextAccessor HttpContextAccessor
 
 <EditForm method="get" Model="@owLocationNameViewModel" OnValidSubmit="@OpenWeatherLocationSubmit">
     <DataAnnotationsValidator />
@@ -41,7 +42,13 @@
     {
         ClearForm();
 
-        var resultObj = await OpenWeatherResults.GetOpenWeatherDirectLocationResult(owLocationNameViewModel.Location, sender);
+        var resultObj = await OpenWeatherResults.GetOpenWeatherDirectLocationResult(
+            owLocationNameViewModel.Location,
+            sender, new()
+                {
+                    Context = HttpContextAccessor.HttpContext,
+                    BlazorComponent = nameof(OpenWeatherLocationSubmit)
+                });
 
         if (resultObj.IsSuccess)
         {

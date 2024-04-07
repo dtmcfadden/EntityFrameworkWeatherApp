@@ -10,6 +10,10 @@ public static class RegisterServices
         services.AddExceptionHandler<WeatherAPIExceptionHandler>();
         services.AddExceptionHandler<GlobalExceptionHandler>();
 
+        //services.AddTransient<WeatherRequestLoggingMiddleware>();
+
+        services.AddHttpContextAccessor();
+
         return services;
     }
 }
