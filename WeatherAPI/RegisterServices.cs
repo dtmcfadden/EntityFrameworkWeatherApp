@@ -106,10 +106,10 @@ public static class RegisterServices
 
     private static IServiceCollection AddDatabaseServices(this IServiceCollection services)
     {
-
         var dbCS = weatherAPIConfiguration.GetSection("weather-connectionstring");
-        if (dbCS.Value is null)
-            throw new CosmosDBDatabaseNotFoundException("weather-connectionstring");
+        dbCS.Value ??= "";
+        //if (dbCS.Value is null)
+        //    throw new CosmosDBDatabaseNotFoundException("weather-connectionstring");
 
         services.AddDbContext<WeatherDBContext>(options =>
             options.UseCosmos(dbCS.Value, "weather"));
