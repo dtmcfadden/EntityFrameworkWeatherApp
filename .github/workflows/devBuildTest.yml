@@ -1,7 +1,7 @@
 on:
   push:
-    branches:
-    - dev
+    branches-ignore:
+    - main
 env:
   DOTNET_CORE_VERSION: 8.0.x
   CONTAINER_APP_NAME: efweatherapp-container-app
@@ -10,7 +10,7 @@ env:
   CONTAINER_REGISTRY_NAME: registry20240318161934
   CONTAINER_REGISTRY_LOGIN_SERVER: registry20240318161934.azurecr.io
 jobs:
-  Build:
+  build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout source code

@@ -1,6 +1,4 @@
-﻿
-
-namespace WeatherAPI.DevTests.Services;
+﻿namespace WeatherAPI.DevTests.Services;
 public class OpenWeatherHTTPServiceTests : IClassFixture<WeatherAppWebApplicationFactory<Program>>, IDisposable
 {
     private readonly WeatherAppWebApplicationFactory<Program> _factory;

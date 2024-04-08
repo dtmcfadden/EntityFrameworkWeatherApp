@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc.Testing;
+using WeatherAPI.Common;
 using WeatherAPI.UnitTests.MockData.Services;
 
 namespace WeatherAPI.UnitTests.TestFactories;
@@ -6,8 +8,12 @@ public class WeatherAppWebApplicationFactory<TProgram> : WebApplicationFactory<T
 {
     public IOptions<EnvironmentOptions> EnvironmentOptions { get; private set; }
 
+    public Mock<ISender> SenderMock { get; private set; }
+
     public Mock<IOpenWeatherHTTPService> OpenWeatherHTTPServiceMock { get; private set; }
     public Mock<IWeatherAPIHTTPService> WeatherAPIHTTPServiceMock { get; private set; }
+
+    public LocationStringMatches LocationStringMatches = new();
 
     public WeatherAppWebApplicationFactory()
     {
@@ -15,8 +21,12 @@ public class WeatherAppWebApplicationFactory<TProgram> : WebApplicationFactory<T
             new OptionsWrapper<EnvironmentOptions>(new()
             {
                 OpenWeatherApiKey = "Key",
-                WeatherAPIApiKey = "Key"
+                WeatherAPIApiKey = "Key",
+                WeatherConnectionString = "CS",
+                WeatherDatabaseName = "DBName",
             });
+
+        SenderMock = new Mock<ISender>();
 
         OpenWeatherHTTPServiceMock =
             WeatherAppWebApplicationFactory<TProgram>.SetupOpenWeatherHTTPServiceMock();

@@ -8,4 +8,10 @@ public sealed record EnvironmentOptions
 
     [JsonPropertyName("weatherapi-apikey")]
     public required string WeatherAPIApiKey { get; set; }
+
+    [JsonPropertyName("weather-databasename")]
+    public required string WeatherDatabaseName { get; set; }
+
+    [JsonPropertyName("weather-connectionstring")]
+    public required string WeatherConnectionString { get; set; }
 }

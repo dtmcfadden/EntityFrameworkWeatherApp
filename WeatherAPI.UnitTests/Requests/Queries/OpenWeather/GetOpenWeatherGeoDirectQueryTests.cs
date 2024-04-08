@@ -1,5 +1,4 @@
-﻿
-using WeatherAPI.Models.OpenWeather;
+﻿using WeatherAPI.Models.OpenWeather;
 using WeatherAPI.Requests.Queries.OpenWeather;
 using WeatherAPI.UnitTests.TestFactories;
 
