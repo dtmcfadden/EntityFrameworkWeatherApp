@@ -18,7 +18,8 @@ public class GetOpenWeatherWeatherByLatLongQueryTests : IClassFixture<WeatherApp
             _client.BaseAddress = _factory.OpenWeatherClientOptions.BaseAddress;
 
             _environmentOptions = scope.ServiceProvider.GetRequiredService<IOptions<EnvironmentOptions>>();
-            _openWeatherHTTPService = new OpenWeatherHTTPService(_environmentOptions, _client);
+            _openWeatherHTTPService = new OpenWeatherHTTPService(
+                _environmentOptions, _client, _factory.WeatherCallCountEntityMock.Object);
             _getOpenWeatherWeatherByLatLongHandler = new GetOpenWeatherWeatherByLatLongHandler(_openWeatherHTTPService);
         }
     }

@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using WeatherAPI.Entities.Interface;
 
 namespace WeatherAPI.DevTests.TestFactories;
 public class WeatherAppWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
 {
     // TODO: Get Sender working properly for testing
     public required Mock<ISender> Sender;
+    public required Mock<IWeatherCallCountEntity> WeatherCallCountEntityMock = new();
 
     public WebApplicationFactoryClientOptions OpenWeatherClientOptions = new()
     {

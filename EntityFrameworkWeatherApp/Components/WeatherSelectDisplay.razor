@@ -1,19 +1,42 @@
 ﻿@using EntityFrameworkWeatherApp.Components.WeatherAPIComponents.Views
 @using EntityFrameworkWeatherApp.Components.WeatherAPIComponents.Forms
+@using EntityFrameworkWeatherApp.Components.WeatherAPIComponents.Forms.CombinedWeather
 @using System.Text.Json
+@using global::WeatherAPI.Models.CombinedWeather
 @using global::WeatherAPI.Models.OpenWeather
 @using global::WeatherAPI.Models.WeatherAPI
 
 <ul class="nav nav-tabs" id="weatherSelectTab" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="openweather-tab" data-bs-toggle="tab" data-bs-target="#openweather-tab-pane" type="button" role="tab" aria-controls="openweather-tab-pane" aria-selected="true">Open Weather</button>
+        <button class="nav-link active" id="combinedweather-tab" data-bs-toggle="tab" data-bs-target="#combinedweather-tab-pane" type="button" role="tab" aria-controls="combinedweather-tab-pane" aria-selected="true">Combined Weather</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="openweather-tab" data-bs-toggle="tab" data-bs-target="#openweather-tab-pane" type="button" role="tab" aria-controls="openweather-tab-pane" aria-selected="false">Open Weather</button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="weatherapi-tab" data-bs-toggle="tab" data-bs-target="#weatherapi-tab-pane" type="button" role="tab" aria-controls="weatherapi-tab-pane" aria-selected="false">Weather API</button>
     </li>
 </ul>
 <div class="tab-content border p-1" id="weatherSelectTabContent">
-    <div class="tab-pane fade show active" id="openweather-tab-pane" role="tabpanel" aria-labelledby="openweather-tab" tabindex="10">
+    <div class="tab-pane fade show active" id="combinedweather-tab-pane" role="tabpanel" aria-labelledby="combinedweather-tab" tabindex="9">
+        <div class="container">
+            <div>
+                <CombinedWeatherLocationForm @ref="combinedWeatherLocationForm"
+                                         ReturnData="@(async (value) => {
+                        await Task.Yield();
+                        HandleReturnData<CombinedWeatherDataModel>(value);
+                    })" />
+            </div>
+            <div>
+                <CombinedWeatherLatLongForm @ref="combinedWeatherLatLongForm"
+                                        ReturnData="@(async (value) => {
+                        await Task.Yield();
+                        HandleReturnData<CombinedWeatherDataModel>(value);
+                    })" />
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="openweather-tab-pane" role="tabpanel" aria-labelledby="openweather-tab" tabindex="10">
         <div class="container">
             <div>
                 <OpenWeatherLocationForm @ref="openWeatherLocationForm"
@@ -80,6 +103,9 @@
     private Type? componentType = null;
     public Dictionary<string, object> Parameters { get; set; } = [];
 
+    private CombinedWeatherLocationForm? combinedWeatherLocationForm;
+    private CombinedWeatherLatLongForm? combinedWeatherLatLongForm;
+
     private OpenWeatherLocationForm? openWeatherLocationForm;
     private OpenWeatherLatLongForm? openWeatherLatLongForm;
 
@@ -100,6 +126,8 @@
     private void ClearForms()
     {
         componentType = null;
+        combinedWeatherLocationForm?.ClearForm();
+        combinedWeatherLatLongForm?.ClearForm();
         openWeatherLocationForm?.ClearForm();
         openWeatherLatLongForm?.ClearForm();
         weatherAPILocationForm?.ClearForm();
@@ -116,6 +144,9 @@
                 instance = null;
             }
         }
+
+        if (modelType == typeof(CombinedWeatherDataModel))
+            return typeof(CombinedWeatherDataView);
 
         if (modelType == typeof(OpenWeatherDataModel))
             return typeof(OpenWeatherDataView);

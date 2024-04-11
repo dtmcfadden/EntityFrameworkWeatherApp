@@ -1,0 +1,37 @@
+﻿@using global::WeatherAPI.Models.CombinedWeather
+@using EntityFrameworkWeatherApp.Components.WeatherAPIComponents.Cards.CombinedWeather
+
+@if (Model is not null)
+{
+    <div class="row">
+        @if (Model?.CombinedWeatherConditionModel is not null)
+        {
+            <div class="col p-1">
+                <CombinedWeatherDataConditionCard Model="@Model.CombinedWeatherConditionModel" />
+            </div>
+        }
+        @if (Model?.CombinedWeatherCoordModel is not null)
+        {
+            <div class="col p-1">
+                <CombinedWeatherDataCoordCard Model="@Model.CombinedWeatherCoordModel" />
+            </div>
+        }
+        @if (Model?.CombinedWeatherLocationModel is not null)
+        {
+            <div class="col p-1">
+                <CombinedWeatherDataLocationCard Model="@Model.CombinedWeatherLocationModel" />
+            </div>
+        }
+        @if (Model?.CombinedWeatherTemperatureModel is not null)
+        {
+            <div class="col p-1">
+                <CombinedWeatherDataTemperatureCard Model="@Model.CombinedWeatherTemperatureModel" />
+            </div>
+        }
+    </div>
+}
+@code {
+    [Parameter]
+    public CombinedWeatherDataModel? Model { get; set; }
+
+}

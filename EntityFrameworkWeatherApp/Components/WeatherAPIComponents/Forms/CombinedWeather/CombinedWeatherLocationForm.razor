@@ -1,0 +1,65 @@
+﻿@using EntityFrameworkWeatherApp.Models
+@using EntityFrameworkWeatherApp.Mediator.WeatherAPI
+@using EntityFrameworkWeatherApp.Components.Shared
+@using Microsoft.AspNetCore.Mvc
+@using global::WeatherAPI.Models.CombinedWeather
+@inject ISender sender
+@inject IHttpContextAccessor HttpContextAccessor
+
+<EditForm method="get" Model="@cwLocationNameViewModel" OnValidSubmit="@CombinedWeatherLocationSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <ExceptionDisplayTemplate exception="@cwLocationError" />
+    <div class="row border grid">
+        <div class="col-8">
+            <div class="form-floating">
+                <InputText type="text" class="form-control selectclick" id="combinedweatherLocation" placeholder="Location" @bind-Value="cwLocationNameViewModel!.Location" />
+                <label for="combinedweatherLocation">Location</label>
+                <ValidationMessage For="() => cwLocationNameViewModel.Location" />
+            </div>
+        </div>
+        <div class="col-4 pt-2">
+            <div class="form-floating">
+                <button type="submit" class="btn btn-primary" id="combinedweatherLocationSubmit">Submit</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public EventCallback<CombinedWeatherDataModel?> ReturnData { get; set; }
+
+    public void ClearForm()
+    {
+        cwLocationError?.Clear();
+    }
+
+    private LocationNameViewModel cwLocationNameViewModel = new();
+    private Dictionary<string, List<ProblemDetails>>? cwLocationError { get; set; } = [];
+
+    private async Task CombinedWeatherLocationSubmit()
+    {
+        ClearForm();
+
+        var resultObj = await CombinedWeatherResults.GetCombinedWeatherLocationResult(
+            cwLocationNameViewModel.Location,
+            sender, new()
+                {
+                    Context = HttpContextAccessor.HttpContext,
+                    BlazorComponent = nameof(CombinedWeatherLocationSubmit)
+                });
+
+        if (resultObj.IsSuccess)
+        {
+            await ReturnData.InvokeAsync(resultObj.Value);
+        }
+        else
+        {
+            if (resultObj.Exception != null)
+            {
+                cwLocationError = resultObj.Exception;
+            }
+        }
+    }
+}
