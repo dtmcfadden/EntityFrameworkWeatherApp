@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
+using WeatherAPI.Entities.Enums;
+using WeatherAPI.Entities.Interface;
 using WeatherAPI.Errors;
 using WeatherAPI.Models.WeatherAPI;
 
@@ -7,24 +9,28 @@ public sealed class WeatherAPIHTTPService : IWeatherAPIHTTPService
 {
     private readonly EnvironmentOptions _environmentOptions;
     private readonly HttpClient _client;
+    private readonly IWeatherCallCountEntity _weatherCallCountEntity;
     private readonly string _weatherPath = "current.json?";
     private readonly string _apiKey;
     private readonly Error? _isImplemented;
 
     public WeatherAPIHTTPService(
         IOptions<EnvironmentOptions> environmentOptions,
-        HttpClient client)
+        HttpClient client,
+        IWeatherCallCountEntity weatherCallCountEntity)
     {
         _environmentOptions = environmentOptions.Value;
         _apiKey = _environmentOptions.WeatherAPIApiKey;
         _client = client;
+        _weatherCallCountEntity = weatherCallCountEntity;
 
         if (string.IsNullOrEmpty(_apiKey) == true)
             _isImplemented = WeatherAPIErrors.APIKeyIsMissing();
     }
 
     [Time]
-    public async Task<Result<WeatherAPICurrentModel>> GetWeatherByLatLong(LatLongEntity latLong,
+    public async Task<Result<WeatherAPICurrentModel>> GetWeatherByLatLong(
+        LatLongEntity latLong,
         CancellationToken cancellationToken = default)
     {
         if (_isImplemented != null)
@@ -50,7 +56,8 @@ public sealed class WeatherAPIHTTPService : IWeatherAPIHTTPService
     }
 
     [Time]
-    public async Task<Result<WeatherAPICurrentModel>> GetWeatherByLocationName(LocationEntity locationName,
+    public async Task<Result<WeatherAPICurrentModel>> GetWeatherByLocationName(
+        LocationEntity locationName,
         CancellationToken cancellationToken = default)
     {
         if (_isImplemented != null)
@@ -63,7 +70,9 @@ public sealed class WeatherAPIHTTPService : IWeatherAPIHTTPService
     }
 
     [Time]
-    private async Task<Result<T>> GetResultFromWeatherAPI<T>(string url, CancellationToken cancellationToken = default)
+    private async Task<Result<T>> GetResultFromWeatherAPI<T>(
+        string url,
+        CancellationToken cancellationToken = default)
     {
         // https://app.swaggerhub.com/apis-docs/WeatherAPI.com/WeatherAPI/1.0.2#/APIs/realtime-weather
 
@@ -86,6 +95,8 @@ public sealed class WeatherAPIHTTPService : IWeatherAPIHTTPService
             var jsonResponse = await response.Content.ReadFromJsonAsync<T>(cancellationToken);
             if (jsonResponse == null)
                 return new Result<T>(WeatherAPIErrors.ErrorResponseFromWeatherAPI("Response is null."));
+
+            _weatherCallCountEntity.AddWeatherCount(WeatherApiNamesEnums.WeatherApi);
 
             return jsonResponse;
         }

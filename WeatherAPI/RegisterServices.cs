@@ -8,6 +8,7 @@ using WeatherAPI.Common;
 using WeatherAPI.CosmosDB.IRepository;
 using WeatherAPI.CosmosDB.Repository;
 using WeatherAPI.CosmosDB.UnitOfWork;
+using WeatherAPI.Entities.Interface;
 using WeatherAPI.Entities.Validators;
 using WeatherAPI.Repositories;
 using WeatherAPI.Services.Caching;
@@ -26,6 +27,7 @@ public static class RegisterServices
     public static IServiceCollection AddAppWeatherAPIServices(this IServiceCollection services)
     {
         services.AddSingleton<LocationStringMatches>();
+        services.AddSingleton<IWeatherCallCountEntity, WeatherCallCountEntity>();
 
         services.AddConfigureOptions();
 

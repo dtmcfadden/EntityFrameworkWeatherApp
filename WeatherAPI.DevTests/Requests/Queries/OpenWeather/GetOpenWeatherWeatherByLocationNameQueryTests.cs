@@ -25,7 +25,8 @@ public class GetOpenWeatherWeatherByLocationNameQueryTests : IClassFixture<Weath
             _client.BaseAddress = _factory.OpenWeatherClientOptions.BaseAddress;
 
             _environmentOptions = scope.ServiceProvider.GetRequiredService<IOptions<EnvironmentOptions>>();
-            _openWeatherHTTPService = new OpenWeatherHTTPService(_environmentOptions, _client);
+            _openWeatherHTTPService = new OpenWeatherHTTPService(
+                _environmentOptions, _client, _factory.WeatherCallCountEntityMock.Object);
             _getOpenWeatherGeoDirectHandler = new GetOpenWeatherGeoDirectHandler(_openWeatherHTTPService);
             _getOpenWeatherGeoZipHandler = new GetOpenWeatherGeoZipHandler(_openWeatherHTTPService);
             _getOpenWeatherWeatherByLocationNameHandler = new GetOpenWeatherWeatherByLocationNameHandler(

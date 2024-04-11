@@ -1,0 +1,37 @@
+﻿@using global::WeatherAPI.Models.CombinedWeather
+@using EntityFrameworkWeatherApp.Components.Shared
+@using EntityFrameworkWeatherApp.Models
+
+<CardTemplate CardTitle="Condition">
+    <CardChildContent>
+        <ListTemplate Items="listItems" TItem="LabelDivTemplateModel" Context="item" SkipNull="false">
+            <ListItemTemplate>
+                <LabelDivTemplate Subheading="@item.Subheading" ContentText="@item.ContentText" />
+            </ListItemTemplate>
+        </ListTemplate>
+    </CardChildContent>
+</CardTemplate>
+
+@code {
+    [Parameter]
+    public CombinedWeatherCoordModel? Model { get; set; }
+
+    [Parameter]
+    public bool ClearList { get; set; } = true;
+
+    private List<LabelDivTemplateModel> listItems = [];
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (ClearList)
+            listItems = new();
+
+        if (Model?.Latitude is not null)
+            listItems.Add(new() { Subheading = "Latitude", ContentText = Model?.Latitude.ToString() });
+
+        if (Model?.Longitude is not null)
+            listItems.Add(new() { Subheading = "Longitude", ContentText = Model?.Longitude.ToString() });
+    }
+}

@@ -45,6 +45,7 @@ public class Program
 
         app.UseExceptionHandler();
 
+        app.MapCombinedWeatherEndpoints();
         app.MapOpenWeatherEndpoints();
         app.MapWeatherAPIEndpoints();
 

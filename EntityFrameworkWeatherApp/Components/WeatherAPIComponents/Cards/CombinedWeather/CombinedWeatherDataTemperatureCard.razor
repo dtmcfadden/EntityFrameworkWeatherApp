@@ -1,0 +1,43 @@
+﻿@using global::WeatherAPI.Models.CombinedWeather
+@using EntityFrameworkWeatherApp.Components.Shared
+@using EntityFrameworkWeatherApp.Models
+
+<CardTemplate CardTitle="Condition">
+    <CardChildContent>
+        <ListTemplate Items="listItems" TItem="LabelDivTemplateModel" Context="item" SkipNull="false">
+            <ListItemTemplate>
+                <LabelDivTemplate Subheading="@item.Subheading" ContentText="@item.ContentText" />
+            </ListItemTemplate>
+        </ListTemplate>
+    </CardChildContent>
+</CardTemplate>
+
+@code {
+    [Parameter]
+    public CombinedWeatherTemperatureModel? Model { get; set; }
+
+    [Parameter]
+    public bool ClearList { get; set; } = true;
+
+    private List<LabelDivTemplateModel> listItems = [];
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (ClearList)
+            listItems = new();
+
+        if (Model?.Kelvin is not null)
+            listItems.Add(new() { Subheading = "Kelvin", ContentText = Model?.Kelvin.ToString() });
+
+        if (Model?.FeelsLikeKelvin is not null)
+            listItems.Add(new() { Subheading = "FeelsLikeKelvin", ContentText = Model?.FeelsLikeKelvin.ToString() });
+
+        if (Model?.PressureMillibar is not null)
+            listItems.Add(new() { Subheading = "PressureMillibar", ContentText = Model?.PressureMillibar.ToString() });
+
+        if (Model?.Humidity is not null)
+            listItems.Add(new() { Subheading = "Humidity", ContentText = Model?.Humidity.ToString() });
+    }
+}

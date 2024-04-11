@@ -1,0 +1,72 @@
+﻿@using EntityFrameworkWeatherApp.Models
+@using EntityFrameworkWeatherApp.Mediator.WeatherAPI
+@using EntityFrameworkWeatherApp.Components.Shared
+@using Microsoft.AspNetCore.Mvc
+@using global::WeatherAPI.Models.CombinedWeather
+@inject ISender sender
+@inject IHttpContextAccessor HttpContextAccessor
+
+<EditForm method="get" Model="@cwLatLongViewModel" OnValidSubmit="@CombinedWeatherLatLongSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <ExceptionDisplayTemplate exception="@cwLatLongError" />
+    <div class="row border grid">
+        <div class="col-4">
+            <div class="form-floating">
+                <InputNumber type="text" class="form-control selectclick" id="combinedweatherLatLongLatitude" placeholder="Latitude" @bind-Value="cwLatLongViewModel!.Latitude" />
+                <label for="combinedweatherLatLongLatitude">Latitude</label>
+                <ValidationMessage For="() => cwLatLongViewModel.Latitude" />
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-floating">
+                <InputNumber type="text" class="form-control selectclick" id="combinedweatherLatLongLongitude" placeholder="Longitude" @bind-Value="cwLatLongViewModel!.Longitude" />
+                <label for="combinedweatherLatLongLongitude">Longitude</label>
+                <ValidationMessage For="() => cwLatLongViewModel.Longitude" />
+            </div>
+        </div>
+        <div class="col-4 pt-2">
+            <div class="form-floating">
+                <button type="submit" class="btn btn-primary" id="combinedweatherLatLongSubmit">Submit</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public EventCallback<CombinedWeatherDataModel?> ReturnData { get; set; }
+
+    public void ClearForm()
+    {
+        cwLatLongError?.Clear();
+    }
+
+    private LatLongViewModel cwLatLongViewModel = new();
+    private Dictionary<string, List<ProblemDetails>>? cwLatLongError { get; set; } = [];
+
+    private async Task CombinedWeatherLatLongSubmit()
+    {
+        ClearForm();
+
+        var resultObj = await CombinedWeatherResults.GetCombinedWeatherLatLongResult(
+            cwLatLongViewModel.Latitude, cwLatLongViewModel.Longitude,
+            sender, new()
+                {
+                    Context = HttpContextAccessor.HttpContext,
+                    BlazorComponent = nameof(CombinedWeatherLatLongSubmit)
+                });
+
+        if (resultObj.IsSuccess)
+        {
+            await ReturnData.InvokeAsync(resultObj.Value);
+        }
+        else
+        {
+            if (resultObj.Exception != null)
+            {
+                cwLatLongError = resultObj.Exception;
+            }
+        }
+    }
+}

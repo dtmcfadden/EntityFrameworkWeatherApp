@@ -20,7 +20,8 @@ public class WeatherAPIHTTPServiceTests : IClassFixture<WeatherAppWebApplication
 
         _weatherAPIHTTPService = new WeatherAPIHTTPService(
                 _factory.EnvironmentOptions,
-                _factory.CreateClient());
+                _factory.CreateClient(),
+                _factory.WeatherCallCountEntityMock.Object);
     }
 
     [Theory]
@@ -86,7 +87,8 @@ public class WeatherAPIHTTPServiceTests : IClassFixture<WeatherAppWebApplication
 
         var waHTTPService = new WeatherAPIHTTPService(
                 waOptions,
-                _factory.CreateClient());
+                _factory.CreateClient(),
+                _factory.WeatherCallCountEntityMock.Object);
 
         // Act
         var result = await waHTTPService.GetWeatherByLatLong(latLongEntity);

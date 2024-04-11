@@ -16,7 +16,6 @@ public abstract class GenericRepository<TEntity, TIdType> :
     protected readonly WeatherDBContext DBContext;
     protected readonly DbSet<TEntity> _dbSet;
     private readonly string DBName;
-    //private bool IsInitialized { get; set; } = false;
 
     protected WeatherDBContext Context => DBContext;
 
@@ -55,8 +54,6 @@ public abstract class GenericRepository<TEntity, TIdType> :
 
             DBContext.Database.EnsureCreated();
         }
-
-
     }
 
     public void Add(TEntity entity)

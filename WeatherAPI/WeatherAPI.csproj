@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\Interface\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\EntityFrameworkWeatherApp.Infrastructure\EntityFrameworkWeatherApp.Infrastructure.csproj" />
   </ItemGroup>
 
