@@ -20,7 +20,8 @@ public class OpenWeatherHTTPServiceTests : IClassFixture<WeatherAppWebApplicatio
 
         _openWeatherHTTPService = new OpenWeatherHTTPService(
                 _factory.EnvironmentOptions,
-                _factory.CreateClient());
+                _factory.CreateClient(),
+                _factory.WeatherCallCountEntityMock.Object);
     }
 
     [Theory]
@@ -72,7 +73,8 @@ public class OpenWeatherHTTPServiceTests : IClassFixture<WeatherAppWebApplicatio
 
         var owHTTPService = new OpenWeatherHTTPService(
                 owOptions,
-                _factory.CreateClient());
+                _factory.CreateClient(),
+                _factory.WeatherCallCountEntityMock.Object);
 
         // Act
         var result = await owHTTPService.GetWeatherByLatLong(latLongEntity);

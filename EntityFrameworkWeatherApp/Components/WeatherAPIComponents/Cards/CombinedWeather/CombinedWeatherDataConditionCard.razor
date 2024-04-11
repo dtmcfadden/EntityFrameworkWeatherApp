@@ -1,0 +1,55 @@
+﻿@using global::WeatherAPI.Models.CombinedWeather
+@using EntityFrameworkWeatherApp.Components.Shared
+@using EntityFrameworkWeatherApp.Models
+
+<CardTemplate CardTitle="Condition">
+    <CardChildContent>
+        <ListTemplate Items="listItems" TItem="LabelDivTemplateModel" Context="item" SkipNull="false">
+            <ListItemTemplate>
+                <LabelDivTemplate Subheading="@item.Subheading" ContentText="@item.ContentText" />
+            </ListItemTemplate>
+        </ListTemplate>
+    </CardChildContent>
+</CardTemplate>
+
+@code {
+    [Parameter]
+    public CombinedWeatherConditionModel? Model { get; set; }
+
+    [Parameter]
+    public bool ClearList { get; set; } = true;
+
+    private List<LabelDivTemplateModel> listItems = [];
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (ClearList)
+            listItems = new();
+
+        if (Model?.Description is not null)
+            listItems.Add(new() { Subheading = "Description", ContentText = Model?.Description.ToString() });
+
+        if (Model?.Icon is not null)
+            listItems.Add(new() { Subheading = "Icon", ContentText = Model?.Icon.ToString() });
+
+        if (Model?.Visibility is not null)
+            listItems.Add(new() { Subheading = "Visibility", ContentText = Model?.Visibility.ToString() });
+
+        if (Model?.WindSpeed is not null)
+            listItems.Add(new() { Subheading = "WindSpeed", ContentText = Model?.WindSpeed.ToString() });
+
+        if (Model?.WindDegree is not null)
+            listItems.Add(new() { Subheading = "WindDegree", ContentText = Model?.WindDegree.ToString() });
+
+        if (Model?.WindGust is not null)
+            listItems.Add(new() { Subheading = "WindGust", ContentText = Model?.WindGust.ToString() });
+
+        if (Model?.PrecipitationMm is not null)
+            listItems.Add(new() { Subheading = "PrecipitationMm", ContentText = Model?.PrecipitationMm.ToString() });
+
+        if (Model?.Clouds is not null)
+            listItems.Add(new() { Subheading = "Clouds", ContentText = Model?.Clouds.ToString() });
+    }
+}

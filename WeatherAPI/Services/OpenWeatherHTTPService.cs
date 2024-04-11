@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
+using WeatherAPI.Entities.Enums;
+using WeatherAPI.Entities.Interface;
 using WeatherAPI.Errors;
 using WeatherAPI.Models.OpenWeather;
 
@@ -11,6 +13,7 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
 {
     private readonly EnvironmentOptions _environmentOptions;
     private readonly HttpClient _client;
+    private readonly IWeatherCallCountEntity _weatherCallCountEntity;
     private readonly string _dataWeatherVer = "data/2.5/weather?";
     private readonly string _geoDirectVer = "geo/1.0/direct?";
     private readonly string _geoZipVer = "geo/1.0/zip?";
@@ -20,18 +23,21 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
 
     public OpenWeatherHTTPService(
         IOptions<EnvironmentOptions> environmentOptions,
-        HttpClient client)
+        HttpClient client,
+        IWeatherCallCountEntity weatherCallCountEntity)
     {
         _environmentOptions = environmentOptions.Value;
         _apiKey = _environmentOptions.OpenWeatherApiKey;
         _client = client;
+        _weatherCallCountEntity = weatherCallCountEntity;
 
         if (string.IsNullOrEmpty(_apiKey) == true)
             _isImplemented = OpenWeatherErrors.APIKeyIsMissing();
     }
 
     [Time]
-    public async Task<Result<OpenWeatherDataModel>> GetWeatherByLatLong(LatLongEntity latLong,
+    public async Task<Result<OpenWeatherDataModel>> GetWeatherByLatLong(
+        LatLongEntity latLong,
         CancellationToken cancellationToken = default)
     {
         if (_isImplemented != null)
@@ -47,7 +53,8 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
     }
 
     [Time]
-    public async Task<Result<List<OpenWeatherGeoDirectModel>>> GetGeoDirect(string LocationQuery,
+    public async Task<Result<List<OpenWeatherGeoDirectModel>>> GetGeoDirect(
+        string LocationQuery,
         CancellationToken cancellationToken = default)
     {
         if (_isImplemented != null)
@@ -63,7 +70,8 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
     }
 
     [Time]
-    public async Task<Result<OpenWeatherGeoZipModel>> GetGeoZip(string ZipQuery,
+    public async Task<Result<OpenWeatherGeoZipModel>> GetGeoZip(
+        string ZipQuery,
         CancellationToken cancellationToken = default)
     {
         if (_isImplemented != null)
@@ -79,7 +87,9 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
     }
 
     [Time]
-    private async Task<Result<T>> GetResultFromOpenWeather<T>(string url, CancellationToken cancellationToken = default)
+    private async Task<Result<T>> GetResultFromOpenWeather<T>(
+        string url,
+        CancellationToken cancellationToken = default)
     {
         HttpResponseMessage response;
 
@@ -100,6 +110,8 @@ public sealed class OpenWeatherHTTPService : IOpenWeatherHTTPService
             var jsonResponse = await response.Content.ReadFromJsonAsync<T>(cancellationToken);
             if (jsonResponse == null)
                 return new Result<T>(OpenWeatherErrors.ErrorResponseFromOpenWeather("Response is null."));
+
+            _weatherCallCountEntity.AddWeatherCount(WeatherApiNamesEnums.OpenWeather);
 
             return jsonResponse;
         }

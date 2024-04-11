@@ -17,7 +17,8 @@ public class WeatherAPIHTTPServiceTests : IClassFixture<WeatherAppWebApplication
             _client.BaseAddress = _factory.WeatherAPIClientOptions.BaseAddress;
 
             _environmentOptions = scope.ServiceProvider.GetRequiredService<IOptions<EnvironmentOptions>>();
-            _weatherAPIHTTPService = new WeatherAPIHTTPService(_environmentOptions, _client);
+            _weatherAPIHTTPService = new WeatherAPIHTTPService(
+                _environmentOptions, _client, _factory.WeatherCallCountEntityMock.Object);
         }
     }
 

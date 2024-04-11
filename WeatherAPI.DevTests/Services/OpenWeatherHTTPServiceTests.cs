@@ -17,7 +17,8 @@ public class OpenWeatherHTTPServiceTests : IClassFixture<WeatherAppWebApplicatio
             _client.BaseAddress = _factory.OpenWeatherClientOptions.BaseAddress;
 
             _environmentOptions = scope.ServiceProvider.GetRequiredService<IOptions<EnvironmentOptions>>();
-            _openWeatherHTTPService = new OpenWeatherHTTPService(_environmentOptions, _client);
+            _openWeatherHTTPService = new OpenWeatherHTTPService(
+                _environmentOptions, _client, _factory.WeatherCallCountEntityMock.Object);
         }
     }
 

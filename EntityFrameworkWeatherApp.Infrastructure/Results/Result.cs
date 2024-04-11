@@ -16,6 +16,12 @@ public class Result<TValue>
 
     public Dictionary<string, List<ProblemDetails>>? Exception = null;
 
+    public Result()
+    {
+        IsSuccess = false;
+        Value = default;
+        Exception = null;
+    }
     public Result(TValue value)
     {
         IsSuccess = true;
@@ -58,7 +64,7 @@ public class Result<TValue>
         Exception = ReturnExceptions(err: err, vr: vResult);
     }
 
-    public Result(Exception e, Error err, ValidationResult vResult)
+    public Result(Exception? e, Error? err, ValidationResult? vResult)
     {
         IsSuccess = false;
         Value = default;

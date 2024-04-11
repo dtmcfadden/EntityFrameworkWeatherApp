@@ -19,9 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkWeatherApp.I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkWeatherApp.Infrastructure.UnitTests", "EntityFrameworkWeatherApp.Infrastructure.UnitTests\EntityFrameworkWeatherApp.Infrastructure.UnitTests.csproj", "{C8066580-37BA-4B89-909F-E4762343CEE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFrameworkWeatherApp.Domain", "EntityFrameworkWeatherApp.Domain\EntityFrameworkWeatherApp.Domain.csproj", "{5D00F656-9D1E-4E5A-B530-58BDE62FBD22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkWeatherApp.Domain", "EntityFrameworkWeatherApp.Domain\EntityFrameworkWeatherApp.Domain.csproj", "{5D00F656-9D1E-4E5A-B530-58BDE62FBD22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFrameworkWeatherApp.Logging", "EntityFrameworkWeatherApp.Logging\EntityFrameworkWeatherApp.Logging.csproj", "{73C34C56-2E80-461B-8E01-5A8F95281404}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameworkWeatherApp.Logging", "EntityFrameworkWeatherApp.Logging\EntityFrameworkWeatherApp.Logging.csproj", "{73C34C56-2E80-461B-8E01-5A8F95281404}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc.Testing;
 using WeatherAPI.Common;
+using WeatherAPI.Entities.Interface;
 using WeatherAPI.UnitTests.MockData.Services;
 
 namespace WeatherAPI.UnitTests.TestFactories;
@@ -9,6 +10,8 @@ public class WeatherAppWebApplicationFactory<TProgram> : WebApplicationFactory<T
     public IOptions<EnvironmentOptions> EnvironmentOptions { get; private set; }
 
     public Mock<ISender> SenderMock { get; private set; }
+
+    public Mock<IWeatherCallCountEntity> WeatherCallCountEntityMock { get; private set; }
 
     public Mock<IOpenWeatherHTTPService> OpenWeatherHTTPServiceMock { get; private set; }
     public Mock<IWeatherAPIHTTPService> WeatherAPIHTTPServiceMock { get; private set; }
@@ -27,6 +30,7 @@ public class WeatherAppWebApplicationFactory<TProgram> : WebApplicationFactory<T
             });
 
         SenderMock = new Mock<ISender>();
+        WeatherCallCountEntityMock = new Mock<IWeatherCallCountEntity>();
 
         OpenWeatherHTTPServiceMock =
             WeatherAppWebApplicationFactory<TProgram>.SetupOpenWeatherHTTPServiceMock();
