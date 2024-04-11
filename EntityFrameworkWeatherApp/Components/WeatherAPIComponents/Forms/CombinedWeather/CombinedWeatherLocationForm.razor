@@ -6,7 +6,8 @@
 @inject ISender sender
 @inject IHttpContextAccessor HttpContextAccessor
 
-<EditForm method="get" Model="@cwLocationNameViewModel" OnValidSubmit="@CombinedWeatherLocationSubmit">
+<EditForm method="get" Model="@cwLocationNameViewModel"
+          OnValidSubmit="@CombinedWeatherLocationSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <ExceptionDisplayTemplate exception="@cwLocationError" />
@@ -20,7 +21,18 @@
         </div>
         <div class="col-4 pt-2">
             <div class="form-floating">
-                <button type="submit" class="btn btn-primary" id="combinedweatherLocationSubmit">Submit</button>
+                <button type="submit" class="btn btn-primary" id="combinedweatherLocationSubmit"
+                        disabled=@(SubmitDisabled || IsGettingWeatherData)>
+                    @if (SubmitDisabled == true)
+                    {
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span>Loading...</span>
+                    }
+                    else
+                    {
+                        <span>Submit</span>
+                    }
+                </button>
             </div>
         </div>
     </div>
@@ -29,6 +41,13 @@
 @code {
     [Parameter]
     public EventCallback<CombinedWeatherDataModel?> ReturnData { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ReturnIsGettingWeatherData { get; set; }
+    [Parameter]
+    public bool IsGettingWeatherData { get; set; } = false;
+
+    private bool SubmitDisabled { get; set; } = false;
 
     public void ClearForm()
     {
@@ -41,6 +60,8 @@
     private async Task CombinedWeatherLocationSubmit()
     {
         ClearForm();
+
+        IsSubmitButtonDisabled(true);
 
         var resultObj = await CombinedWeatherResults.GetCombinedWeatherLocationResult(
             cwLocationNameViewModel.Location,
@@ -61,5 +82,13 @@
                 cwLocationError = resultObj.Exception;
             }
         }
+
+        IsSubmitButtonDisabled(false);
+    }
+
+    private void IsSubmitButtonDisabled(bool IsDisabled)
+    {
+        SubmitDisabled = IsDisabled;
+        ReturnIsGettingWeatherData.InvokeAsync(IsDisabled);
     }
 }

@@ -27,7 +27,18 @@
         </div>
         <div class="col-4 pt-2">
             <div class="form-floating">
-                <button type="submit" class="btn btn-primary" id="openweatherLatLongSubmit">Submit</button>
+                <button type="submit" class="btn btn-primary" id="openweatherLatLongSubmit"
+                        disabled=@(SubmitDisabled || IsGettingWeatherData)>
+                    @if (SubmitDisabled == true)
+                    {
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span>Loading...</span>
+                    }
+                    else
+                    {
+                        <span>Submit</span>
+                    }
+                </button>
             </div>
         </div>
     </div>
@@ -36,6 +47,13 @@
 @code {
     [Parameter]
     public EventCallback<OpenWeatherDataModel?> ReturnData { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ReturnIsGettingWeatherData { get; set; }
+    [Parameter]
+    public bool IsGettingWeatherData { get; set; } = false;
+
+    private bool SubmitDisabled { get; set; } = false;
 
     public void ClearForm()
     {
@@ -48,6 +66,8 @@
     private async Task OpenWeatherLatLongSubmit()
     {
         ClearForm();
+
+        IsSubmitButtonDisabled(true);
 
         var resultObj = await OpenWeatherResults.GetOpenWeatherDirectLatLongResult(
             owLatLongViewModel.Latitude, owLatLongViewModel.Longitude,
@@ -68,5 +88,13 @@
                 owLatLongError = resultObj.Exception;
             }
         }
+
+        IsSubmitButtonDisabled(false);
+    }
+
+    private void IsSubmitButtonDisabled(bool IsDisabled)
+    {
+        SubmitDisabled = IsDisabled;
+        ReturnIsGettingWeatherData.InvokeAsync(IsDisabled);
     }
 }
