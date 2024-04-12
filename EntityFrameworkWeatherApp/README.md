@@ -9,6 +9,7 @@
 - Have **Blazor** components for reactive web pages
 - Use **Mediatr** to implement the Mediator pattern to implement **CQRS**
 - Use **FluentValidation** to check API input and classes
+- Use **CosmosDB** for database
 
 ### Setup
 
@@ -31,21 +32,27 @@
    ```json
    {
    	"openweather-apikey": "Insert Key Here",
-   	"weatherapi-apikey": "Insert Key Here"
+   	"weatherapi-apikey": "Insert Key Here",
+	"weather-connectionstring": "CosmosDB Primary Connection String"
    }
    ```
+3. In order to use CosmosDB locally for development
+	1. [Azure Cosmos DB emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/emulator)
+
 
 ### Project Descriptions
 
 <dl>
 	<dt><b>EntityFrameworkWeatherApp</b></dt>
 	<dd>Main project. Has MVC logic.</dd>
-	<dt><b>EntityFrameworkWeatherApp.Abstractions</b></dt>
-	<dd>Classes used accross projects.</dd>
+	<dt><b>EntityFrameworkWeatherApp.Domain</b></dt>
+	<dd>Domain Layer</dd>
+	<dt><b>EntityFrameworkWeatherApp.Infrastructure</b></dt>
+	<dd>Infrastructure</dd>
 	<dt><b>WeatherAPI</b></dt>
 	<dd>Logic used to connect to the weather APIs</dd>
-	<dt><b>EntityFrameworkWeatherApp.Abstractions.UnitTests</b></dt>
-	<dd>Unit tests.</dd>
+	<dt><b>EntityFrameworkWeatherApp.Infrastructure.UnitTests</b></dt>
+	<dd>Infrastructure Unit tests.</dd>
 	<dt><b>WeatherAPI.DevTests</b></dt>
 	<dd>Tests used in development but not meant to be run in the CI/CD pipeline.</dd>
 	<dt><b>WeatherAPI.UnitTests</b></dt>
