@@ -22,16 +22,26 @@
         <div class="container">
             <div>
                 <CombinedWeatherLocationForm @ref="combinedWeatherLocationForm"
-                                         ReturnData="@(async (value) => {
+                                             IsGettingWeatherData=IsGettingWeatherData
+                                             ReturnData="@(async (value) => {
                         await Task.Yield();
                         HandleReturnData<CombinedWeatherDataModel>(value);
+                    })"
+                                             ReturnIsGettingWeatherData="@(async (value) => {
+                        await Task.Yield();
+                        HandleGettingWeatherDataCheck(value);
                     })" />
             </div>
             <div>
                 <CombinedWeatherLatLongForm @ref="combinedWeatherLatLongForm"
-                                        ReturnData="@(async (value) => {
+                                            IsGettingWeatherData=IsGettingWeatherData
+                                            ReturnData="@(async (value) => {
                         await Task.Yield();
                         HandleReturnData<CombinedWeatherDataModel>(value);
+                    })"
+                                            ReturnIsGettingWeatherData="@(async (value) => {
+                        await Task.Yield();
+                        HandleGettingWeatherDataCheck(value);
                     })" />
             </div>
         </div>
@@ -40,16 +50,26 @@
         <div class="container">
             <div>
                 <OpenWeatherLocationForm @ref="openWeatherLocationForm"
+                                         IsGettingWeatherData=IsGettingWeatherData
                                          ReturnData="@(async (value) => {
                         await Task.Yield();
                         HandleReturnData<OpenWeatherDataModel>(value);
+                    })"
+                                         ReturnIsGettingWeatherData="@(async (value) => {
+                        await Task.Yield();
+                        HandleGettingWeatherDataCheck(value);
                     })" />
             </div>
             <div>
                 <OpenWeatherLatLongForm @ref="openWeatherLatLongForm"
+                                        IsGettingWeatherData=IsGettingWeatherData
                                         ReturnData="@(async (value) => {
                         await Task.Yield();
                         HandleReturnData<OpenWeatherDataModel>(value);
+                    })"
+                                        ReturnIsGettingWeatherData="@(async (value) => {
+                        await Task.Yield();
+                        HandleGettingWeatherDataCheck(value);
                     })" />
             </div>
         </div>
@@ -58,16 +78,26 @@
         <div class="container">
             <div>
                 <WeatherAPILocationForm @ref="weatherAPILocationForm"
+                                        IsGettingWeatherData=IsGettingWeatherData
                                         ReturnData="@(async (value) => {
                         await Task.Yield();
                         HandleReturnData<WeatherAPICurrentModel>(value);
+                    })"
+                                        ReturnIsGettingWeatherData="@(async (value) => {
+                        await Task.Yield();
+                        HandleGettingWeatherDataCheck(value);
                     })" />
             </div>
             <div>
                 <WeatherAPILatLongForm @ref="weatherAPILatLongForm"
+                                       IsGettingWeatherData=IsGettingWeatherData
                                        ReturnData="@(async (value) => {
                         await Task.Yield();
                         HandleReturnData<WeatherAPICurrentModel>(value);
+                    })"
+                                       ReturnIsGettingWeatherData="@(async (value) => {
+                        await Task.Yield();
+                        HandleGettingWeatherDataCheck(value);
                     })" />
             </div>
         </div>
@@ -88,11 +118,11 @@
         {
             <pre class="text-start">
                 @(JsonSerializer.Serialize(weatherJsonData,
-                        new JsonSerializerOptions()
-                    {
-                        WriteIndented = true,
-                    }))
-                    </pre>
+                                        new JsonSerializerOptions()
+                                    {
+                                        WriteIndented = true,
+                                    }))
+                                    </pre>
         }
     </div>
 </div>
@@ -102,6 +132,8 @@
     private object? weatherJsonData;
     private Type? componentType = null;
     public Dictionary<string, object> Parameters { get; set; } = [];
+
+    public bool IsGettingWeatherData { get; set; } = false;
 
     private CombinedWeatherLocationForm? combinedWeatherLocationForm;
     private CombinedWeatherLatLongForm? combinedWeatherLatLongForm;
@@ -115,12 +147,17 @@
     private void HandleReturnData<T>(T? data)
     {
         ClearForms();
-        if(data != null)
+        if (data != null)
         {
             weatherJsonData = data;
             Parameters = new() { { "Model", data } };
             componentType = GetComponentTypeByDataModel(data.GetType());
         }
+    }
+
+    private void HandleGettingWeatherDataCheck(bool isGettingWeatherData)
+    {
+        IsGettingWeatherData = isGettingWeatherData;
     }
 
     private void ClearForms()
