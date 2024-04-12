@@ -1,6 +1,4 @@
-﻿using EntityFrameworkWeatherApp.Mediator.WeatherAPI;
-
-namespace EntityFrameworkWeatherApp.Mediator.WeatherAPIRequests;
+﻿namespace EntityFrameworkWeatherApp.Mediator.WeatherAPI.OpenWeather;
 
 // https://localhost:7109/api/OpenWeather/geodirect?locationQuery=London
 

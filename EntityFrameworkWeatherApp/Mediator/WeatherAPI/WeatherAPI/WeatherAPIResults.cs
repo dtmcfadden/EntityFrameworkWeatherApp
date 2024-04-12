@@ -4,7 +4,7 @@ using EntityFrameworkWeatherApp.Infrastructure.Results;
 using WeatherAPI.Models.WeatherAPI;
 using WeatherAPI.Requests.Queries.WeatherAPI;
 
-namespace EntityFrameworkWeatherApp.Mediator.WeatherAPI;
+namespace EntityFrameworkWeatherApp.Mediator.WeatherAPI.WeatherAPI;
 
 public class WeatherAPIResults
 {

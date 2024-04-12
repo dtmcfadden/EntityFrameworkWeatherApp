@@ -1,33 +1,35 @@
 ﻿@using EntityFrameworkWeatherApp.Models
-@using EntityFrameworkWeatherApp.Mediator.WeatherAPI
+@using EntityFrameworkWeatherApp.Mediator.WeatherAPI.CombinedWeather
+@using EntityFrameworkWeatherApp.Mediator.WeatherAPI.OpenWeather
+@using EntityFrameworkWeatherApp.Mediator.WeatherAPI.WeatherAPI
 @using EntityFrameworkWeatherApp.Components.Shared
 @using Microsoft.AspNetCore.Mvc
-@using global::WeatherAPI.Models.WeatherAPI
+@using global::WeatherAPI.Models.OpenWeather
 @inject ISender sender
 @inject IHttpContextAccessor HttpContextAccessor
 
-<EditForm method="get" Model="@waLatLongViewModel" OnValidSubmit="@WeatherAPILatLongSubmit">
+<EditForm method="get" Model="@owLatLongViewModel" OnValidSubmit="@OpenWeatherLatLongSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    <ExceptionDisplayTemplate exception="@waLatLongError" />
+    <ExceptionDisplayTemplate exception="@owLatLongError" />
     <div class="row border grid">
         <div class="col-4">
             <div class="form-floating">
-                <InputNumber type="text" class="form-control selectclick" id="weatherAPILatLongLatitude" placeholder="Latitude" @bind-Value="waLatLongViewModel!.Latitude" />
-                <label for="weatherAPILatLongLatitude">Latitude</label>
-                <ValidationMessage For="() => waLatLongViewModel.Latitude" />
+                <InputNumber type="text" class="form-control selectclick" id="openweatherLatLongLatitude" placeholder="Latitude" @bind-Value="owLatLongViewModel!.Latitude" />
+                <label for="openweatherLatLongLatitude">Latitude</label>
+                <ValidationMessage For="() => owLatLongViewModel.Latitude" />
             </div>
         </div>
         <div class="col-4">
             <div class="form-floating">
-                <InputNumber type="text" class="form-control selectclick" id="weatherAPILatLongLongitude" placeholder="Longitude" @bind-Value="waLatLongViewModel!.Longitude" />
-                <label for="weatherAPILatLongLongitude">Longitude</label>
-                <ValidationMessage For="() => waLatLongViewModel.Longitude" />
+                <InputNumber type="text" class="form-control selectclick" id="openweatherLatLongLongitude" placeholder="Longitude" @bind-Value="owLatLongViewModel!.Longitude" />
+                <label for="openweatherLatLongLongitude">Longitude</label>
+                <ValidationMessage For="() => owLatLongViewModel.Longitude" />
             </div>
         </div>
         <div class="col-4 pt-2">
             <div class="form-floating">
-                <button type="submit" class="btn btn-primary" id="weatherAPILatLongSubmit"
+                <button type="submit" class="btn btn-primary" id="openweatherLatLongSubmit"
                         disabled=@(SubmitDisabled || IsGettingWeatherData)>
                     @if (SubmitDisabled == true)
                     {
@@ -46,7 +48,7 @@
 
 @code {
     [Parameter]
-    public EventCallback<WeatherAPICurrentModel?> ReturnData { get; set; }
+    public EventCallback<OpenWeatherDataModel?> ReturnData { get; set; }
 
     [Parameter]
     public EventCallback<bool> ReturnIsGettingWeatherData { get; set; }
@@ -57,24 +59,24 @@
 
     public void ClearForm()
     {
-        waLatLongError?.Clear();
+        owLatLongError?.Clear();
     }
 
-    private LatLongViewModel waLatLongViewModel = new();
-    private Dictionary<string, List<ProblemDetails>>? waLatLongError { get; set; } = [];
+    private LatLongViewModel owLatLongViewModel = new();
+    private Dictionary<string, List<ProblemDetails>>? owLatLongError { get; set; } = [];
 
-    private async Task WeatherAPILatLongSubmit()
+    private async Task OpenWeatherLatLongSubmit()
     {
         ClearForm();
 
         IsSubmitButtonDisabled(true);
 
-        var resultObj = await WeatherAPIResults.GetWeatherAPIWeatherByLatLongResult(
-            waLatLongViewModel.Latitude, waLatLongViewModel.Longitude,
+        var resultObj = await OpenWeatherResults.GetOpenWeatherDirectLatLongResult(
+            owLatLongViewModel.Latitude, owLatLongViewModel.Longitude,
             sender, new()
                 {
                     Context = HttpContextAccessor.HttpContext,
-                    BlazorComponent = nameof(WeatherAPILatLongSubmit)
+                    BlazorComponent = nameof(OpenWeatherLatLongSubmit)
                 });
 
         if (resultObj.IsSuccess)
@@ -85,7 +87,7 @@
         {
             if (resultObj.Exception != null)
             {
-                waLatLongError = resultObj.Exception;
+                owLatLongError = resultObj.Exception;
             }
         }
 

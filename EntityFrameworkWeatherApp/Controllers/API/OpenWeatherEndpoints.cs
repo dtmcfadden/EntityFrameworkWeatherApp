@@ -1,5 +1,5 @@
 ﻿using Asp.Versioning.Builder;
-using EntityFrameworkWeatherApp.Mediator.WeatherAPIRequests;
+using EntityFrameworkWeatherApp.Mediator.WeatherAPI.OpenWeather;
 using WeatherAPI.Models.OpenWeather;
 
 namespace EntityFrameworkWeatherApp.Controllers.API;

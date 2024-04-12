@@ -1,26 +1,35 @@
 ﻿@using EntityFrameworkWeatherApp.Models
-@using EntityFrameworkWeatherApp.Mediator.WeatherAPI
+@using EntityFrameworkWeatherApp.Mediator.WeatherAPI.CombinedWeather
+@using EntityFrameworkWeatherApp.Mediator.WeatherAPI.OpenWeather
+@using EntityFrameworkWeatherApp.Mediator.WeatherAPI.WeatherAPI
 @using EntityFrameworkWeatherApp.Components.Shared
 @using Microsoft.AspNetCore.Mvc
 @using global::WeatherAPI.Models.WeatherAPI
 @inject ISender sender
 @inject IHttpContextAccessor HttpContextAccessor
 
-<EditForm method="get" Model="@waLocationNameViewModel" OnValidSubmit="@WeatherAPILocationSubmit">
+<EditForm method="get" Model="@waLatLongViewModel" OnValidSubmit="@WeatherAPILatLongSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    <ExceptionDisplayTemplate exception="@waLocationError" />
+    <ExceptionDisplayTemplate exception="@waLatLongError" />
     <div class="row border grid">
-        <div class="col-8">
+        <div class="col-4">
             <div class="form-floating">
-                <InputText type="text" class="form-control selectclick" id="openweatherLocation" placeholder="Location" @bind-Value="waLocationNameViewModel!.Location" />
-                <label for="openweatherLocation">Location</label>
-                <ValidationMessage For="() => waLocationNameViewModel.Location" />
+                <InputNumber type="text" class="form-control selectclick" id="weatherAPILatLongLatitude" placeholder="Latitude" @bind-Value="waLatLongViewModel!.Latitude" />
+                <label for="weatherAPILatLongLatitude">Latitude</label>
+                <ValidationMessage For="() => waLatLongViewModel.Latitude" />
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-floating">
+                <InputNumber type="text" class="form-control selectclick" id="weatherAPILatLongLongitude" placeholder="Longitude" @bind-Value="waLatLongViewModel!.Longitude" />
+                <label for="weatherAPILatLongLongitude">Longitude</label>
+                <ValidationMessage For="() => waLatLongViewModel.Longitude" />
             </div>
         </div>
         <div class="col-4 pt-2">
             <div class="form-floating">
-                <button type="submit" class="btn btn-primary" id="weatherAPILocationSubmit"
+                <button type="submit" class="btn btn-primary" id="weatherAPILatLongSubmit"
                         disabled=@(SubmitDisabled || IsGettingWeatherData)>
                     @if (SubmitDisabled == true)
                     {
@@ -50,24 +59,24 @@
 
     public void ClearForm()
     {
-        waLocationError?.Clear();
+        waLatLongError?.Clear();
     }
 
-    private LocationNameViewModel waLocationNameViewModel = new();
-    private Dictionary<string, List<ProblemDetails>>? waLocationError { get; set; } = [];
+    private LatLongViewModel waLatLongViewModel = new();
+    private Dictionary<string, List<ProblemDetails>>? waLatLongError { get; set; } = [];
 
-    private async Task WeatherAPILocationSubmit()
+    private async Task WeatherAPILatLongSubmit()
     {
         ClearForm();
 
         IsSubmitButtonDisabled(true);
 
-        var resultObj = await WeatherAPIResults.GetWeatherAPIWeatherByLocationNameResult(
-            waLocationNameViewModel.Location,
+        var resultObj = await WeatherAPIResults.GetWeatherAPIWeatherByLatLongResult(
+            waLatLongViewModel.Latitude, waLatLongViewModel.Longitude,
             sender, new()
                 {
                     Context = HttpContextAccessor.HttpContext,
-                    BlazorComponent = nameof(WeatherAPILocationSubmit)
+                    BlazorComponent = nameof(WeatherAPILatLongSubmit)
                 });
 
         if (resultObj.IsSuccess)
@@ -78,7 +87,7 @@
         {
             if (resultObj.Exception != null)
             {
-                waLocationError = resultObj.Exception;
+                waLatLongError = resultObj.Exception;
             }
         }
 
