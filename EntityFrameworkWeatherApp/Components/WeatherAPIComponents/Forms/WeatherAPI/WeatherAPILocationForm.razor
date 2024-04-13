@@ -55,7 +55,7 @@
         waLocationError?.Clear();
     }
 
-    private LocationNameViewModel waLocationNameViewModel = new();
+    private LocationNameViewModel waLocationNameViewModel { get; set; } = new();
     private Dictionary<string, List<ProblemDetails>>? waLocationError { get; set; } = [];
 
     private async Task WeatherAPILocationSubmit()

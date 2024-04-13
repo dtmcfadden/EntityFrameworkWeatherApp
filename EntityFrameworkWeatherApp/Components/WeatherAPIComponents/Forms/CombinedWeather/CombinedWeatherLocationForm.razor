@@ -56,7 +56,7 @@
         cwLocationError?.Clear();
     }
 
-    private LocationNameViewModel cwLocationNameViewModel = new();
+    private LocationNameViewModel cwLocationNameViewModel { get; set; } = new();
     private Dictionary<string, List<ProblemDetails>>? cwLocationError { get; set; } = [];
 
     private async Task CombinedWeatherLocationSubmit()
