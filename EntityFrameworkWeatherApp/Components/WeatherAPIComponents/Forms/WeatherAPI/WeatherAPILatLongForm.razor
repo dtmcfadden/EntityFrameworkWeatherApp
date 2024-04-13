@@ -62,7 +62,7 @@
         waLatLongError?.Clear();
     }
 
-    private LatLongViewModel waLatLongViewModel = new();
+    private LatLongViewModel waLatLongViewModel { get; set; } = new();
     private Dictionary<string, List<ProblemDetails>>? waLatLongError { get; set; } = [];
 
     private async Task WeatherAPILatLongSubmit()

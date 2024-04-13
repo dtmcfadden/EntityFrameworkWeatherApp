@@ -62,7 +62,7 @@
         cwLatLongError?.Clear();
     }
 
-    private LatLongViewModel cwLatLongViewModel = new();
+    private LatLongViewModel cwLatLongViewModel { get; set; } = new();
     private Dictionary<string, List<ProblemDetails>>? cwLatLongError { get; set; } = [];
 
     private async Task CombinedWeatherLatLongSubmit()
