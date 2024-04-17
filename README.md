@@ -31,8 +31,8 @@
    4. The Secrets should follow the below structure
    ```json
    {
-   	"openweather-apikey": "Insert Key Here",
-   	"weatherapi-apikey": "Insert Key Here",
+	"openweather-apikey": "Insert Key Here",
+	"weatherapi-apikey": "Insert Key Here",
 	"weather-connectionstring": "CosmosDB Primary Connection String"
    }
    ```
