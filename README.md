@@ -41,7 +41,7 @@
 
 ### Project Descriptions
 
-[Screen Shots](SCREEENSHOTS.md)
+[Screen Shots](SCREENSHOTS.md)
 
 <dl>
 	<dt><b>EntityFrameworkWeatherApp</b></dt>
