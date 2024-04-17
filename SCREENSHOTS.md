@@ -1,10 +1,13 @@
 # Screen Shots
 
 Weather Form in bootstrap tabs
-![Weather Form](./ReadMeDocs/WeatherForm.png)
+---
+<kbd>![Weather Form](./ReadMeDocs/WeatherForm.png)</kbd>
 
 Weather Results using bootstrap cards and json
-![Weather Results](./ReadMeDocs/WeatherResults.png)
+---
+<kbd>![Weather Results](./ReadMeDocs/WeatherResults.png)</kbd>
 
-Swagger api. Only available in development
-![Weather Swagger View](./ReadMeDocs/SwaggerView.png)
+Swagger API. Only available in development
+---
+<kbd>![Weather Swagger View](./ReadMeDocs/SwaggerView.png)</kbd>
