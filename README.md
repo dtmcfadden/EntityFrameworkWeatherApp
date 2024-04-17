@@ -39,8 +39,9 @@
 3. In order to use CosmosDB locally for development
 	1. [Azure Cosmos DB emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/emulator)
 
-
 ### Project Descriptions
+
+[Screen Shots](SCREEENSHOTS.md)
 
 <dl>
 	<dt><b>EntityFrameworkWeatherApp</b></dt>
